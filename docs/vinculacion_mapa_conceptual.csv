@@ -1,17 +1,21 @@
-nodo_mapa,donde_se_implementa,evidencia
-Entorno de desarrollo en Python,Sección 2 · verificar_entorno,Intérprete .venv y versiones impresas
-Ambiente virtual (.venv),Sección 2 · verificar_entorno,Ruta del intérprete contiene .venv
-requirements.txt,Sección 3.2 · escribir_requirements,Archivo generado desde el entorno
-Ambiente virtual registra dependencias,Sección 3.2 · requirements.txt,Dependencias con versión fija
-Git y GitHub,Sección 6 · consultas a Git,"Rama, commits, remoto y correo"
-Commits descriptivos y ramas,Sección 6 · convención de commits,Historial con prefijos docs/feat/fix
-Repositorio del proyecto,Sección 3 · localizar_raiz y árbol,Estructura impresa y validada
-Carpetas F1 y F2,Sección 3 · DIR_FASES,Carpetas F1–F4 creadas
-Jupyter Notebook,Este cuaderno,F1/S1_F1_Definicion.ipynb ejecutado
-NumPy y Pandas,Secciones 5 y 9 · tablas de documentación,Versiones verificadas y DataFrames
-"Funciones, módulos y scripts reutilizables",Sección 4 · src/utilidades.py,Módulo importado y probado
-Documentación en Markdown y comentarios,Celdas narrativas y docstrings,"Cuaderno legible, docs/ generado"
-README del proyecto,Sección 9 · generar_readme,README.md en la raíz
-Validación técnica y pruebas,Secciones 4.1 y 7 · asserts,"Casos normal, límite y excepciones"
-Datos públicos de Inside Airbnb,Sección 5 · FICHA y procedencia,"Ficha, cita APA 7 y evaluación"
-Preparación y análisis de los datos,Muestra estratificada + Fase 2,src/generar_muestra.py y F2/
+nodo_mapa,tipo,estado,donde_se_implementa,evidencia
+Entorno de desarrollo en Python,herramienta,Implementado,Sección 2 · verificar_entorno,Intérprete .venv y versiones impresas
+Ambiente virtual (.venv),herramienta,Implementado,Sección 2 · verificar_entorno,Ruta del intérprete contiene .venv
+requirements.txt,flujo reproducible,Implementado,Sección 3.2 · escribir_requirements,Archivo generado desde el entorno
+Dependencias con versión fija,flujo reproducible,Implementado,Sección 3.2 · requirements.txt,requirements.txt en la raíz
+Git y GitHub,herramienta,Implementado,Sección 6 · consultas a Git,"Rama, commits, remoto y correo"
+Commits descriptivos y ramas,organización del repositorio,Implementado,Sección 6 · convención de commits,Historial con prefijos docs/feat/fix
+Repositorio del proyecto,organización del repositorio,Implementado,Sección 3 · localizar_raiz y árbol,Estructura impresa y validada
+Carpetas F1 y F2,organización del repositorio,Implementado,Sección 3 · DIR_FASES,Carpetas F1-F4 creadas
+Jupyter Notebook,herramienta,Implementado,Este cuaderno,F1/S1_F1_Definicion.ipynb ejecutado
+NumPy y Pandas,herramienta,Implementado,Secciones 5 y 9 · tablas de documentación,Versiones verificadas y DataFrames
+"Funciones, módulos y scripts reutilizables",proceso,Implementado,Sección 4 · src/utilidades.py,Módulo importado y probado
+Documentación en Markdown y comentarios,estructura del notebook,Implementado,Celdas narrativas y docstrings,"Cuaderno legible, docs/ generado"
+README del proyecto,organización del repositorio,Implementado,Sección 9 · generar_readme,README.md en la raíz
+Validación técnica y pruebas,proceso,Implementado,Secciones 4.1 y 7 · asserts,"Casos normal, límite y excepciones"
+Datos públicos de Inside Airbnb,proceso,Implementado,Sección 5 · FICHA y procedencia,"Ficha, cita APA 7 y evaluación"
+Preparación y análisis de los datos,flujo reproducible,Implementado,Muestra estratificada + Fase 2,src/generar_muestra.py y F2/
+Inferencia del idioma de las reseñas,proceso,Proyectado (F3),-,Decisión D6 pendiente; requiere reviews.csv.gz
+Indicadores por comuna y configuración,proceso,Proyectado (F3),-,Objetivos específicos 3 y 4
+Visualizaciones e informe final,herramienta,Proyectado (F4),-,Matplotlib/Seaborn + informe técnico
+Escalamiento de variables (z-score),decisión técnica,Descartado,Cuaderno F2 · sección 6,Proyecto descriptivo: no aplica

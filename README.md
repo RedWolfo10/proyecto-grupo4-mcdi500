@@ -3,9 +3,9 @@
 Un inversionista que está evaluando comprar un departamento para arriendo turístico en Santiago no tiene evidencia sistemática sobre qué ubicación, tipología y equipamiento se asocian a mayores ingresos. El proyecto describe esa relación a partir de 18.904 alojamientos publicados en Airbnb (Inside Airbnb, captura del 25–26 de septiembre de 2026), de los que se toma una muestra estratificada por comuna.
 
 ## Integrantes
-- Alfredo Valenzuela Aburto (@usuario-github)
-- Mauricio Martínez Quiñones (@usuario-github)
-- María Laura Lanosa (@usuario-github)
+- Alfredo Valenzuela Aburto
+- Mauricio Martínez Quiñones
+- María Laura Lanosa
 
 ## Datos
 - Fuente: Inside Airbnb - Santiago, Chile (listings detallado, muestra estratificada) (Inside Airbnb, Inside Airbnb - Get the data)
