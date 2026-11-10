@@ -1,38 +1,26 @@
 # Validación del dataset — MCDI500
 
-**Archivo:** `listings.csv` · 5106 filas × 90 columnas
+**Archivo:** `listings.csv` · 5106 filas × 78 columnas
 
 ## Perfil de variables
 
 | variable | dtype | rol | unicos | pct_nulos |
 | --- | --- | --- | --- | --- |
 | id | int64 | identificador | 5106 | 0.0 |
-| listing_url | str | identificador | 5106 | 0.0 |
 | scrape_id | int64 | discreta | 1 | 0.0 |
 | last_scraped | str | binaria | 2 | 0.0 |
 | source | str | nominal | 1 | 95.3 |
-| name | str | identificador | 4990 | 0.0 |
-| description | str | texto libre | 4720 | 0.6 |
 | neighborhood_overview | float64 | vacía | 0 | 100.0 |
-| picture_url | str | texto libre | 5077 | 0.0 |
-| host_id | int64 | continua | 3609 | 0.0 |
-| host_url | str | alta cardinalidad | 3609 | 0.0 |
-| host_profile_id | int64 | continua | 3609 | 0.0 |
-| host_profile_url | str | alta cardinalidad | 3609 | 0.0 |
-| host_name | str | alta cardinalidad | 1617 | 0.0 |
+| host_id | str | alta cardinalidad | 3609 | 0.0 |
 | host_since | float64 | vacía | 0 | 100.0 |
 | hosts_time_as_user_years | int64 | discreta | 18 | 0.0 |
 | hosts_time_as_user_months | int64 | discreta | 12 | 0.0 |
 | hosts_time_as_host_years | int64 | discreta | 16 | 0.0 |
 | hosts_time_as_host_months | int64 | discreta | 12 | 0.0 |
-| host_location | str | alta cardinalidad | 189 | 32.0 |
-| host_about | str | texto libre | 1559 | 50.6 |
 | host_response_time | float64 | vacía | 0 | 100.0 |
 | host_response_rate | float64 | vacía | 0 | 100.0 |
 | host_acceptance_rate | float64 | vacía | 0 | 100.0 |
 | host_is_superhost | str | binaria | 2 | 0.0 |
-| host_thumbnail_url | float64 | vacía | 0 | 100.0 |
-| host_picture_url | str | texto libre | 3440 | 0.0 |
 | host_neighbourhood | float64 | vacía | 0 | 100.0 |
 | host_listings_count | int64 | discreta | 72 | 0.0 |
 | host_total_listings_count | float64 | vacía | 0 | 100.0 |
@@ -102,15 +90,15 @@
 | estado | requisito | detalle |
 | --- | --- | --- |
 | OK | Al menos 2000 filas | 5106 filas |
-| OK | Al menos 12 columnas | 90 columnas |
-| OK | Combina al menos 3 roles analíticos | discreta, continua, alta cardinalidad, texto libre, binaria, fecha, nominal |
-| OK | Al menos una variable numérica | 46 numéricas (continuas o discretas) |
+| OK | Al menos 12 columnas | 78 columnas |
+| OK | Combina al menos 3 roles analíticos | discreta, continua, alta cardinalidad, binaria, fecha, nominal, texto libre |
+| OK | Al menos una variable numérica | 44 numéricas (continuas o discretas) |
 | OK | Al menos una variable categórica | 8 categóricas (nominales, binarias u ordinales) |
 | OK | Presencia de valores faltantes | máximo 100.0% en una variable |
 | AVISO | Ninguna variable sobre 60% de faltantes | máximo 100.0% |
 | OK | Incluye alguna variable de fecha | 4 detectadas |
-| OK | Incluye texto o categórica de alta cardinalidad | 15 detectadas |
-| OK | Archivo bajo 100 MB | 13.6 MB |
+| OK | Incluye texto o categórica de alta cardinalidad | 8 detectadas |
+| OK | Archivo bajo 100 MB | 8.8 MB |
 | OK | Sin filas duplicadas exactas | ninguna |
 
 ## Resultado

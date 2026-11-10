@@ -9,18 +9,23 @@ Se actualiza al cerrar cada fase.
 | D2 | Alojamiento activo = `number_of_reviews_ltm > 0` y `availability_365 > 0` | Excluye anuncios inactivos; 4.786 tienen ocupación estimada cero. Cumplen 13.788 (72,9 %); de ellos 12.253 son departamentos completos | Tomada |
 | D3 | Métrica principal: ocupación estimada; precio como segunda métrica; ingresos solo como métrica derivada | `estimated_revenue_l365d` = ocupación × precio en el 100 % de los casos: no aporta información independiente | Tomada |
 | D4 | Hablar de "ingresos estimados", nunca de rentabilidad | No hay datos de costos ni del precio de compra del departamento | Tomada |
-| D5 | Eliminar datos personales al cargar, en la primera función del pipeline F2 | Protección de datos de anfitriones y huéspedes | Tomada |
+| D5 | Eliminar datos personales al generar la muestra (`src/generar_muestra.py`) y verificar la regla al cargar en F2 | Protección de datos de anfitriones y huéspedes; aplicarla en la generación permite versionar `data/raw/` (ver D7) | Tomada |
 | D6 | Inferir el idioma de las reseñas como aproximación a la demanda extranjera | Costo y beneficio por evaluar en F3; requiere `reviews.csv.gz` | Pendiente |
-| D7 | No versionar `data/raw/` | Contiene datos personales y ~50 MB; el README documenta la descarga y la generación de la muestra | Tomada |
+| D7 | Las descargas originales (`*.csv.gz`) no se versionan; la muestra de `data/raw/` sí, porque llega anonimizada | El original contiene datos personales y ~50 MB; la muestra anonimizada pesa ~9 MB y no tiene datos personales | Tomada |
 | D8 | Trabajar con una muestra aleatoria estratificada por comuna (~27 %, semilla 42, mínimo 1 registro por comuna) | El archivo detallado pesa ~50 MB; la muestra conserva las 32 comunas y mantiene los cuadernos livianos. `src/generar_muestra.py` la reproduce de forma determinista | Tomada |
 
-## Datos personales eliminados en F2 (D5)
+## Datos personales eliminados (D5)
 
-- **listings:** se eliminan `host_name`, `host_about`, `host_location`,
-  `host_url`, `host_profile_url`, `host_picture_url`, `host_thumbnail_url`,
-  `picture_url`, `listing_url`, `name`, `description` y
-  `neighborhood_overview`. `host_id` se reemplaza por un código seudonimizado
-  (hash), para seguir contando anuncios por anfitrión.
+Se aplican en `src/generar_muestra.py` al producir la muestra versionada, y la
+primera función del pipeline F2 reaplica y verifica la misma regla al cargar
+(idempotente: si el archivo cambiara, vuelve a eliminarlos).
+
+- **listings:** se eliminan `name`, `description` (pueden incluir nombres o
+  teléfonos), `host_name`, `host_about`, `host_location`, `host_url`,
+  `host_profile_id`, `host_profile_url`, `host_picture_url`,
+  `host_thumbnail_url`, `picture_url` y `listing_url`. `host_id` se reemplaza
+  por un código seudonimizado (hash), para seguir contando anuncios por
+  anfitrión.
 - **reviews** (si se usa en F3): se eliminarían `reviewer_name` y `comments`,
   este último después de derivar el idioma; `reviewer_id` se seudonimizaría.
 

@@ -5,7 +5,6 @@ last_scraped,,binaria,str,2,0.0
 source,,nominal,str,1,95.3
 neighborhood_overview,,vacía,float64,0,100.0
 host_id,identificador,alta cardinalidad,str,3609,0.0
-host_profile_id,,continua,int64,3609,0.0
 host_since,,vacía,float64,0,100.0
 hosts_time_as_user_years,,discreta,int64,18,0.0
 hosts_time_as_user_months,,discreta,int64,12,0.0

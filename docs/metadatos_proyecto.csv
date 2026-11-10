@@ -7,7 +7,9 @@ datos.archivo,listings.csv (muestra estratificada)
 datos.fuente.plataforma,Inside Airbnb
 datos.fuente.captura,2026-09-25/26
 datos.fuente.url,http://insideairbnb.com/get-the-data/
-pipeline.anonimizacion.columnas_eliminadas,"name, description, host_name, host_about, host_location, host_url, host_profile_url, host_picture_url, host_thumbnail_url, picture_url, listing_url"
+pipeline.anonimizacion.aplicada_en,src/generar_muestra.py
+pipeline.anonimizacion.verificada_en,pipeline F2
+pipeline.anonimizacion.columnas,"name, description, host_name, host_about, host_location, host_url, host_profile_id, host_profile_url, host_picture_url, host_thumbnail_url, picture_url, listing_url"
 pipeline.anonimizacion.seudonimizado,host_id
 pipeline.limpieza.precio,texto a numerico
 pipeline.limpieza.imputacion.beds,mediana por tramo de accommodates

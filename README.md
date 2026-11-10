@@ -11,20 +11,23 @@ Un inversionista que evalúa comprar un departamento para arriendo turístico en
 - Fuente: Inside Airbnb - Santiago, Chile (listings detallado, muestra estratificada) (Inside Airbnb, Inside Airbnb - Get the data)
 - Enlace: http://insideairbnb.com/get-the-data/
 - Estructura original: 18.904 filas x 90 columnas; archivo de trabajo:
-  muestra estratificada de 5106 filas (semilla 42, una por comuna mínimo)
-- Ubicación esperada: `data/raw/listings.csv` (no se versiona)
+  muestra estratificada y anonimizada de 5106 filas x 78 columnas
+  (semilla 42, mínimo un registro por comuna)
+- Ubicación esperada: `data/raw/listings.csv` (versionada: ya viene anonimizada)
 
 ### Cómo obtener los datos
 1. Descargue `listings.csv` (versión detallada) de Inside Airbnb, Santiago.
+   La descarga original contiene datos personales y NO se versiona (`*.csv.gz`).
 2. Genere la muestra en la raíz del proyecto:
 
        python src/generar_muestra.py ruta/al/listings.csv
 
-   El script es determinista: con la misma entrada produce la misma muestra.
+   El script es determinista: con la misma entrada produce la misma muestra,
+   ya anonimizada (sin nombres, enlaces ni fotografías; `host_id` con hash).
 
 ## Estructura del repositorio
 ```
-data/raw/        datos originales, sin modificar y sin versionar
+data/raw/        muestra anonimizada generada por src/generar_muestra.py
 data/processed/  datos tras limpieza y transformación (F2)
 docs/            diccionario, registro de decisiones, metadatos y validación
 src/             módulos reutilizables del proyecto
@@ -58,5 +61,6 @@ Prefijos usados: docs, data, feat, fix.
 ## Decisiones técnicas
 - Los datos son comunes a todas las fases (`data/`); los cuadernos se separan por fase.
 - Semilla aleatoria fijada en 42 para asegurar reproducibilidad.
-- `data/raw/` no se versiona (datos personales y peso); `data/processed/` sí.
+- `data/raw/` se versiona porque la muestra llega anonimizada; las descargas
+  originales (`*.csv.gz`) no se versionan (datos personales y peso).
 - Registro de decisiones numeradas (D1–D8) en `docs/registro_decisiones.md`.
