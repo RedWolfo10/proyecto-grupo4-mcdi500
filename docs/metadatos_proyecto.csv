@@ -1,0 +1,19 @@
+clave,valor
+proyecto.nombre,Alojamientos Airbnb en Santiago para decisión de inversión
+proyecto.grupo,Grupo 4
+proyecto.fase,F2
+proyecto.semilla,42
+datos.archivo,listings.csv (muestra estratificada)
+datos.fuente.plataforma,Inside Airbnb
+datos.fuente.captura,2026-09-25/26
+datos.fuente.url,http://insideairbnb.com/get-the-data/
+pipeline.anonimizacion.columnas_eliminadas,"name, description, host_name, host_about, host_location, host_url, host_profile_url, host_picture_url, host_thumbnail_url, picture_url, listing_url"
+pipeline.anonimizacion.seudonimizado,host_id
+pipeline.limpieza.precio,texto a numerico
+pipeline.limpieza.imputacion.beds,mediana por tramo de accommodates
+pipeline.limpieza.imputacion.bedrooms,mediana por tramo de accommodates
+pipeline.limpieza.eliminadas,columnas >= 90 % nulas
+pipeline.filtros.room_type,Entire home/apt
+pipeline.filtros.activo,reviews_ltm > 0 y availability_365 > 0
+pipeline.transformacion.property_type,top 5 + Otro
+pipeline.transformacion.amenities,top 20 binarias

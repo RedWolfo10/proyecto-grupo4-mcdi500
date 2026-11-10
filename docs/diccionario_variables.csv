@@ -1,0 +1,80 @@
+variable,rol_declarado,rol_observado,dtype,n_unicos,pct_nulos
+id,identificador,identificador,int64,5106,0.0
+scrape_id,,discreta,int64,1,0.0
+last_scraped,,binaria,str,2,0.0
+source,,nominal,str,1,95.3
+neighborhood_overview,,vacía,float64,0,100.0
+host_id,identificador,alta cardinalidad,str,3609,0.0
+host_profile_id,,continua,int64,3609,0.0
+host_since,,vacía,float64,0,100.0
+hosts_time_as_user_years,,discreta,int64,18,0.0
+hosts_time_as_user_months,,discreta,int64,12,0.0
+hosts_time_as_host_years,,discreta,int64,16,0.0
+hosts_time_as_host_months,,discreta,int64,12,0.0
+host_response_time,,vacía,float64,0,100.0
+host_response_rate,,vacía,float64,0,100.0
+host_acceptance_rate,,vacía,float64,0,100.0
+host_is_superhost,binaria,binaria,str,2,0.0
+host_neighbourhood,,vacía,float64,0,100.0
+host_listings_count,,discreta,int64,72,0.0
+host_total_listings_count,,vacía,float64,0,100.0
+host_verifications,,vacía,float64,0,100.0
+host_has_profile_pic,,binaria,str,2,0.0
+host_identity_verified,,binaria,str,2,0.0
+neighbourhood,,vacía,float64,0,100.0
+neighbourhood_cleansed,nominal,alta cardinalidad,str,32,0.0
+neighbourhood_group_cleansed,,vacía,float64,0,100.0
+latitude,continua,continua,float64,4200,0.0
+longitude,continua,continua,float64,4264,0.0
+property_type,alta cardinalidad,alta cardinalidad,str,53,0.0
+room_type,nominal,nominal,str,4,0.0
+accommodates,discreta,discreta,int64,16,0.0
+bathrooms,,vacía,float64,0,100.0
+bathrooms_text,nominal,alta cardinalidad,str,28,0.1
+bedrooms,discreta,discreta,float64,12,0.0
+beds,discreta,discreta,float64,17,1.1
+amenities,texto libre,texto libre,str,4968,0.0
+price,continua,alta cardinalidad,str,3297,4.7
+price_quote_checkin_date,,fecha,str,170,3.2
+price_quote_checkout_date,,fecha,str,207,3.2
+price_quote_total_price,,continua,float64,3347,4.7
+price_quote_price_per_night,,continua,float64,3297,4.7
+price_quote_raw,,texto libre,str,4545,3.2
+minimum_nights,discreta,discreta,float64,38,0.0
+maximum_nights,,discreta,float64,82,0.0
+minimum_minimum_nights,,discreta,float64,38,0.0
+maximum_minimum_nights,,discreta,float64,42,0.0
+minimum_maximum_nights,,discreta,float64,82,0.0
+maximum_maximum_nights,,discreta,float64,82,0.0
+minimum_nights_avg_ntm,,continua,float64,109,0.0
+maximum_nights_avg_ntm,,continua,float64,136,0.0
+calendar_updated,,vacía,float64,0,100.0
+has_availability,,nominal,str,1,0.9
+availability_30,,discreta,int64,31,0.0
+availability_60,,discreta,int64,61,0.0
+availability_90,,discreta,int64,91,0.0
+availability_365,discreta,continua,int64,350,0.0
+calendar_last_scraped,,binaria,str,2,0.0
+number_of_reviews,discreta,continua,int64,332,0.0
+number_of_reviews_ltm,discreta,discreta,int64,127,0.0
+number_of_reviews_l30d,discreta,discreta,int64,17,0.0
+availability_eoy,,discreta,int64,99,0.0
+number_of_reviews_ly,,discreta,int64,115,0.0
+estimated_occupancy_l365d,discreta,discreta,int64,73,0.0
+estimated_revenue_l365d,continua,continua,float64,3306,4.7
+first_review,fecha,fecha,str,1880,14.7
+last_review,fecha,fecha,str,699,14.7
+review_scores_rating,continua,continua,float64,110,14.7
+review_scores_accuracy,,continua,float64,103,14.7
+review_scores_cleanliness,,continua,float64,123,14.7
+review_scores_checkin,,continua,float64,88,14.7
+review_scores_communication,,continua,float64,100,14.7
+review_scores_location,,continua,float64,109,14.7
+review_scores_value,,continua,float64,111,14.7
+license,,alta cardinalidad,str,44,99.0
+instant_bookable,,vacía,float64,0,100.0
+calculated_host_listings_count,discreta,discreta,int64,54,0.0
+calculated_host_listings_count_entire_homes,,discreta,int64,54,0.0
+calculated_host_listings_count_private_rooms,,discreta,int64,19,0.0
+calculated_host_listings_count_shared_rooms,,discreta,int64,4,0.0
+reviews_per_month,continua,continua,float64,751,14.7

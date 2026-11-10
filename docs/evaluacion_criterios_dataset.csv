@@ -1,0 +1,10 @@
+criterio,tipo,mínimo,observado,cumple,por qué se pide
+Filas,obligatorio,2000,5106,sí,Permite agrupar por categoría sin grupos vacíos
+Columnas,obligatorio,12,90,sí,Asegura variedad de roles analíticos
+Roles analíticos distintos,obligatorio,3,6,sí,El conjunto debe ser multivariado
+Variables numéricas,obligatorio,1,46,sí,Escalamiento y valores atípicos
+Variables categóricas,obligatorio,1,8,sí,Codificación de categorías
+Fecha,aviso,1,4,sí,Parseo y derivación de variables temporales
+Texto o alta cardinalidad,aviso,1,15,sí,Normalización y agrupación
+Alguna variable con ≥1% de nulos,aviso,1,99,sí,Un conjunto perfecto no tiene preprocesamiento que justificar
+Ninguna variable sobre 60% de nulos,aviso,60,100,aviso,Por encima de eso la variable no es recuperable
