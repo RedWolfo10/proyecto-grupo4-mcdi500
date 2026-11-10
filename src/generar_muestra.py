@@ -19,6 +19,7 @@ Uso:
 """
 
 import argparse
+import hashlib
 import sys
 from pathlib import Path
 
@@ -31,6 +32,36 @@ SEMILLA = 42                         # la misma semilla de los cuadernos
 FRACCION = 0.27                      # proporción de cada comuna en la muestra
 ESTRATO = "neighbourhood_cleansed"   # variable de estratificación (32 comunas)
 MINIMO_POR_COMUNA = 1                # comunas muy pequeñas conservan un registro
+
+# ---------------------------------------------------------------------------
+# Datos personales (decision D5). La muestra se versiona en data/raw/, por lo
+# que la anonimizacion se aplica AQUI, en la generacion: el archivo que queda
+# en el repositorio nunca contiene nombres, enlaces ni fotografias. El cuaderno
+# de la Fase 2 verifica la misma regla al cargar.
+# ---------------------------------------------------------------------------
+COLUMNAS_PERSONALES = [
+    "name", "description",                    # pueden incluir nombres o teléfonos
+    "host_name", "host_about", "host_location",
+    "host_url", "host_profile_id", "host_profile_url",
+    "host_picture_url", "host_thumbnail_url",
+    "picture_url", "listing_url",
+]
+COLUMNA_ID_ANFITRION = "host_id"             # se seudonimiza, no se elimina
+
+
+def seudonimizar(valor, largo=12):
+    """Codigo seudonimo estable: misma entrada -> mismo codigo."""
+    return hashlib.sha256(str(valor).encode("utf-8")).hexdigest()[:largo]
+
+
+def anonimizar(df, columnas=COLUMNAS_PERSONALES, col_id=COLUMNA_ID_ANFITRION):
+    """Elimina las columnas personales y seudonimiza el id del anfitrion."""
+    df = df.copy()
+    presentes = [c for c in columnas if c in df.columns]
+    df = df.drop(columns=presentes)
+    if col_id in df.columns and df[col_id].astype(str).str.isdigit().all():
+        df[col_id] = df[col_id].map(seudonimizar)
+    return df, presentes
 
 
 def generar_muestra(df, estrato=ESTRATO, fraccion=FRACCION,
@@ -85,6 +116,9 @@ def main():
     df = pd.read_csv(origen)
     muestra = generar_muestra(df, fraccion=args.fraccion)
 
+    # Anonimizacion (D5): la muestra se versiona, el original no.
+    muestra, eliminadas = anonimizar(muestra)
+
     salida = Path(args.salida)
     salida.parent.mkdir(parents=True, exist_ok=True)
     muestra.to_csv(salida, index=False)
@@ -93,6 +127,8 @@ def main():
     print(f"Origen   : {origen} -> {df.shape[0]} filas x {df.shape[1]} columnas")
     print(f"Muestra  : {muestra.shape[0]} filas ({muestra.shape[0] / df.shape[0]:.1%}), "
           f"{muestra[ESTRATO].nunique()} de {n_comunas} comunas")
+    print(f"Anonim.  : {len(eliminadas)} columnas personales eliminadas, "
+          f"'{COLUMNA_ID_ANFITRION}' seudonimizado")
     print(f"Escrita  : {salida} ({salida.stat().st_size / 1024**2:.1f} MB)")
 
 
