@@ -6,7 +6,7 @@
   "semilla": 42,
   "python": "3.14.4",
   "sistema": "Linux 7.0.0-42-generic",
-  "interprete": "/home/mmartinez/projects/unab/proyecto-grupo4-mcdi500/.venv/bin/python3",
+  "interprete": ".venv/bin/python3",
   "entorno_virtual": true,
   "dependencias": {
     "numpy": "2.5.4",
