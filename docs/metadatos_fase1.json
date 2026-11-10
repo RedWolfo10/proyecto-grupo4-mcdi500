@@ -3,6 +3,7 @@
   "grupo": "Grupo 4",
   "fase": "F1",
   "fecha_ejecucion": "2026-11-10",
+  "commit": "3d2530d",
   "semilla": 42,
   "python": "3.14.4",
   "sistema": "Linux 7.0.0-42-generic",
