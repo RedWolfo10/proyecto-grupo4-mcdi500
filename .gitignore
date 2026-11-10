@@ -21,10 +21,9 @@ desktop.ini
 # Variables de entorno y secretos
 .env
 
-# Datos originales: contienen datos personales y superan el tamaño razonable
-# para versionar. Se descargan de Inside Airbnb y se genera la muestra con
-# src/generar_muestra.py (ver README).
-data/raw/
+# Descargas originales de Inside Airbnb: contienen datos personales y superan
+# el tamaño razonable para versionar. La muestra de data/raw/ SI se versiona
+# porque src/generar_muestra.py la deja anonimizada (ver README).
 *.csv.gz
 
 # Datos pesados y modelos
