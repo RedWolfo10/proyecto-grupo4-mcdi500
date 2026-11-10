@@ -4,12 +4,12 @@ Generador de la muestra de trabajo - MCDI500 - Grupo 4
 
 El archivo detallado listings.csv de Inside Airbnb (Santiago, captura de
 septiembre de 2026) tiene 18.904 filas x 90 columnas y unos 50 MB. Para que
-los cuadernos sean livianos de ejecutar y de versionar, el proyecto trabaja
+los cuadernos queden livianos de correr y de versionar, el proyecto trabaja
 con una muestra aleatoria ESTRATIFICADA por comuna.
 
 La muestra es reproducible: con la misma entrada y la misma semilla, este
-script produce siempre el mismo archivo. Cada integrante descarga el archivo
-original desde Inside Airbnb y ejecuta este script una sola vez.
+script da siempre el mismo archivo. Cada integrante descarga el archivo
+original de Inside Airbnb y corre este script una sola vez.
 
 Uso:
     python src/generar_muestra.py ruta/al/listings.csv
@@ -26,7 +26,7 @@ from pathlib import Path
 import pandas as pd
 
 # ---------------------------------------------------------------------------
-# Parámetros de la muestra. Cambiarlos aquí y documentarlo en el informe.
+# Parámetros de la muestra. Si se cambian acá, hay que documentarlo en el informe.
 # ---------------------------------------------------------------------------
 SEMILLA = 42                         # la misma semilla de los cuadernos
 FRACCION = 0.27                      # proporción de cada comuna en la muestra
@@ -34,10 +34,10 @@ ESTRATO = "neighbourhood_cleansed"   # variable de estratificación (32 comunas)
 MINIMO_POR_COMUNA = 1                # comunas muy pequeñas conservan un registro
 
 # ---------------------------------------------------------------------------
-# Datos personales (decision D5). La muestra se versiona en data/raw/, por lo
+# Datos personales (decision D5). La muestra se versiona en data/raw/, asi
 # que la anonimizacion se aplica AQUI, en la generacion: el archivo que queda
-# en el repositorio nunca contiene nombres, enlaces ni fotografias. El cuaderno
-# de la Fase 2 verifica la misma regla al cargar.
+# en el repositorio nunca trae nombres, enlaces ni fotografias. El cuaderno de
+# la Fase 2 verifica la misma regla al cargar.
 # ---------------------------------------------------------------------------
 COLUMNAS_PERSONALES = [
     "name", "description",                    # pueden incluir nombres o teléfonos
@@ -77,7 +77,7 @@ def generar_muestra(df, estrato=ESTRATO, fraccion=FRACCION,
     fraccion : float
         Proporcion de cada estrato que entra a la muestra.
     minimo : int
-        Registros minimos por estrato (evita que comunas pequenas desaparezcan).
+        Minimo de registros por estrato (para que las comunas pequenas no desaparezcan).
     semilla : int
         Semilla del muestreo aleatorio.
 

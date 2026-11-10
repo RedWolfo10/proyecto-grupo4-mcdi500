@@ -1,7 +1,7 @@
 """Utilidades compartidas del proyecto MCDI500 - Grupo 4.
 
-Este modulo lo genera el cuaderno de la Fase 1 y lo importan las fases
-siguientes. Proyecto: alojamientos Airbnb en Santiago de Chile.
+Este modulo lo genera el cuaderno de la Fase 1 y lo importan las fases que
+vienen. Proyecto: alojamientos Airbnb en Santiago de Chile.
 """
 
 import re
@@ -9,11 +9,11 @@ import hashlib
 
 
 class ProyectoError(Exception):
-    """Error propio del proyecto: permite distinguirlo de los de las librerias."""
+    """Error propio del proyecto, para distinguirlo de los de las librerias."""
 
 
 def normalizar_nombre(texto):
-    """Convierte un nombre de columna a minusculas, sin espacios ni signos.
+    """Pasa un nombre de columna a minusculas, sin espacios ni signos.
 
     Ejemplo
     -------
@@ -31,16 +31,16 @@ def normalizar_columnas(nombres):
     """Aplica normalizar_nombre a una lista y verifica que no haya duplicados."""
     normalizados = [normalizar_nombre(n) for n in nombres]
     if len(set(normalizados)) != len(normalizados):
-        raise ProyectoError("La normalizacion produjo nombres duplicados.")
+        raise ProyectoError("La normalizacion dejo nombres duplicados.")
     return normalizados
 
 
 def seudonimizar(valor, largo=12):
     """Devuelve un codigo seudonimo estable para un identificador personal.
 
-    Se aplica a host_id (decision D5): permite contar anuncios por anfitrion
-    sin conservar el identificador original. El mismo valor de entrada produce
-    siempre el mismo codigo, de modo que el conteo sigue siendo valido.
+    Se aplica a host_id (decision D5): deja contar anuncios por anfitrion
+    sin guardar el identificador original. El mismo valor de entrada da
+    siempre el mismo codigo, asi que el conteo sigue siendo valido.
 
     Ejemplo
     -------

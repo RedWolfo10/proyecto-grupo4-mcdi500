@@ -2,9 +2,9 @@
 """
 Validador de dataset — MCDI500 · Programación para la Ciencia de Datos
 
-Comprueba que el conjunto de datos elegido por el grupo sea multivariado y cumpla
-los requisitos del proyecto transversal, y produce un informe que puede adjuntarse
-al entregable de la Fase 1.
+Revisa que el conjunto de datos elegido por el grupo sea multivariado y cumpla
+los requisitos del proyecto transversal, y produce un informe que se puede
+adjuntar al entregable de la Fase 1.
 
 Uso:
     python validar_dataset.py data/raw/mi_dataset.csv
@@ -19,23 +19,23 @@ from pathlib import Path
 import pandas as pd
 
 # ---------------------------------------------------------------------------
-# Umbrales del curso. Ajústelos aquí si cambian los requisitos de la actividad.
+# Umbrales del curso. Se ajustan acá si cambian los requisitos de la actividad.
 # ---------------------------------------------------------------------------
 MIN_FILAS, MIN_COLUMNAS = 2000, 12
-MIN_ROLES = 3                       # cuántos roles analíticos distintos debe combinar
+MIN_ROLES = 3                       # cuantos roles analíticos distintos debe combinar
 NULOS_MIN, NULOS_MAX = 1.0, 60.0    # porcentajes
 MAX_MB = 100                        # límite práctico de GitHub
 
-# Requisitos que DESCALIFICAN el conjunto. Todo lo demás se informa como AVISO:
-# son recomendaciones que enriquecen el trabajo, pero no lo impiden.
+# Requisitos que DESCALIFICAN el conjunto. Todo lo demás sale como AVISO:
+# recomendaciones que suman al trabajo, pero no lo impiden.
 OBLIGATORIOS = {"filas", "columnas", "multivariado", "numerica", "categorica"}
 
 
 def clasificar(s: pd.Series) -> str:
     """Devuelve el rol analítico de una variable, que no es lo mismo que su dtype.
 
-    Tres columnas int64 pueden ser un identificador, una variable discreta y una
-    binaria, y cada una exige un preprocesamiento distinto.
+    Tres columnas int64 pueden ser un identificador, una discreta y una
+    binaria, y cada una pide un preprocesamiento distinto.
     """
     s = s.dropna()
     if s.empty:
@@ -85,7 +85,7 @@ def evaluar(df: pd.DataFrame, perfil: pd.DataFrame, ruta: Path):
     roles = perfil["rol"].value_counts()
     n = lambda rol: int(roles.get(rol, 0))
 
-    # El identificador no cuenta como rol analítico: se excluye del análisis.
+    # El identificador no cuenta como rol analítico: queda por fuera del análisis.
     roles_utiles = [r for r in roles.index if r not in ("identificador", "vacía")]
     numericas = n("continua") + n("discreta")
     categoricas = n("nominal") + n("binaria") + n("ordinal")
