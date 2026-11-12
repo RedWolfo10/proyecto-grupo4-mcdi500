@@ -46,10 +46,10 @@ Correr los cuadernos en orden, primero F1 y después F2. Cada cuaderno
 encuentra la raíz del proyecto aunque Jupyter lo abra en su propia carpeta.
 
 ### Dependencias declaradas
-- ipykernel
-- jupyterlab
+- ipykernel==7.4.0
+- jupyterlab==4.6.6
 - matplotlib==3.11.2
-- notebook
+- notebook==7.6.5
 - numpy==2.5.4
 - pandas==3.1.1
 - scikit-learn==1.9.1

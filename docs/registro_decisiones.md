@@ -6,7 +6,7 @@ Se va actualizando cada vez que se cierra una fase.
 | N.° | Decisión | Motivo y evidencia | Estado |
 |---|---|---|---|
 | D1 | Unidad de análisis: `room_type = "Entire home/apt"` | La pregunta trata sobre comprar un departamento completo; 15.383 de 18.904 anuncios son de este tipo | Tomada |
-| D2 | Alojamiento activo = `number_of_reviews_ltm > 0` y `availability_365 > 0` | Excluye anuncios inactivos; 4.786 tienen ocupación estimada cero. Cumplen 13.788 (72,9 %); de ellos 12.253 son departamentos completos | Tomada |
+| D2 | Alojamiento activo = `number_of_reviews_ltm > 0` y `availability_365 > 0` | Excluye anuncios inactivos; 4.786 tienen ocupación estimada cero. Cumplen 13.788 (72,9 %); de ellos 12.253 son alojamientos completos | Tomada |
 | D3 | Métrica principal: ocupación estimada; precio como segunda métrica; ingresos solo como métrica derivada | `estimated_revenue_l365d` = ocupación × precio en el 100 % de los casos: no aporta información independiente | Tomada |
 | D4 | Hablar de "ingresos estimados", nunca de rentabilidad | No hay datos de costos ni del precio de compra del departamento | Tomada |
 | D5 | Eliminar datos personales al generar la muestra (`src/generar_muestra.py`) y verificar la regla al cargar en F2 | Protección de datos de anfitriones y huéspedes; aplicarla en la generación permite versionar `data/raw/` (ver D7) | Tomada |
