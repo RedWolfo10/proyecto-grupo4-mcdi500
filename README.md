@@ -42,8 +42,13 @@ Python 3.13 o superior
     # source .venv/bin/activate      # macOS y Linux
     python -m pip install -r requirements.txt
 
-Correr los cuadernos en orden, primero F1 y después F2. Cada cuaderno
+Correr los cuadernos en orden: F1, F2 y F3. Cada cuaderno
 encuentra la raíz del proyecto aunque Jupyter lo abra en su propia carpeta.
+
+En la Fase 3 el pipeline de F2 se reordenó en `src/`: la carga quedó en
+`carga.py`, los pasos que aprenden del dataset son clases que heredan de
+`Transformador` (`transformadores.py`), `pipeline.py` las encadena y
+`medicion.py` mide tiempo y memoria.
 
 ### Dependencias declaradas
 - ipykernel==7.4.0

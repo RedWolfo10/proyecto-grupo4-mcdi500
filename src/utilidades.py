@@ -51,3 +51,22 @@ seudonimizar(224592)  # doctest omite el valor exacto a proposito
         raise ProyectoError(
             f"Se esperaba texto o entero y se recibio {type(valor).__name__}.")
     return hashlib.sha256(str(valor).encode("utf-8")).hexdigest()[:largo]
+
+
+def aplanar(estructura, prefijo="", separador="."):
+    """Aplana un diccionario anidado en uno de un solo nivel.
+
+    >>> aplanar({"a": {"b": 1, "c": {"d": 2}}})
+    {'a.b': 1, 'a.c.d': 2}
+    """
+    plano = {}
+    for clave, valor in estructura.items():
+        ruta = f"{prefijo}{separador}{clave}" if prefijo else str(clave)
+
+        if isinstance(valor, dict):
+            plano.update(aplanar(valor, ruta, separador))
+        elif isinstance(valor, (list, tuple)):
+            plano[ruta] = ", ".join(str(v) for v in valor)
+        else:
+            plano[ruta] = valor
+    return plano

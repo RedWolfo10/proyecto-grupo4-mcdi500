@@ -1,0 +1,12 @@
+clave,valor
+proyecto.nombre,Alojamientos Airbnb en Santiago
+proyecto.grupo,Grupo 4
+proyecto.fase,F3
+proyecto.semilla,42
+nucleo.clase_base,Transformador
+nucleo.clases,"ImputadorPorGrupo, AgrupadorTopCategorias, BinarizadorAmenidades"
+nucleo.pipeline,Pipeline (polimorfismo)
+verificacion.contra,data/processed/listings_procesado.csv
+verificacion.columnas_comparadas,26
+medicion.comparacion,bucle vs explode()
+medicion.ganador,explode()
