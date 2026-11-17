@@ -29,3 +29,6 @@ desktop.ini
 # Datos pesados y modelos
 *.ckpt
 *.pth
+
+# Material docente del curso (referencia, no versionar)
+Material_Didactico_Semana_3/
