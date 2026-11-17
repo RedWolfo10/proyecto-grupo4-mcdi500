@@ -8,5 +8,5 @@ nucleo.clases,"ImputadorPorGrupo, AgrupadorTopCategorias, BinarizadorAmenidades"
 nucleo.pipeline,Pipeline (polimorfismo)
 verificacion.contra,data/processed/listings_procesado.csv
 verificacion.columnas_comparadas,26
-medicion.comparacion,bucle vs explode()
-medicion.ganador,explode()
+medicion.comparacion,map/bucle vs vectorizada (explode+pivot)
+medicion.ganador,map/bucle
