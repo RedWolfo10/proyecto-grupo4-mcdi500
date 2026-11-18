@@ -10,14 +10,18 @@ from utilidades import normalizar_nombre
 
 def parsear_amenidades(valor):
     """Convierte el texto JSON de amenities en una lista de strings."""
-    if valor is None or (isinstance(valor, float) and np.isnan(valor)):
+    if valor is None or valor is pd.NA or (np.isscalar(valor) and pd.isna(valor)):
         return []
+    if not isinstance(valor, str):
+        raise ValueError("amenities debe ser texto JSON.")
     try:
         lista = json.loads(valor)
-    except json.JSONDecodeError:
-        return []
+    except json.JSONDecodeError as error:
+        raise ValueError("amenities debe contener una lista JSON valida.") from error
     if not isinstance(lista, list):
         raise ValueError(f"amenities no es una lista: {valor!r}")
+    if not all(isinstance(amenidad, str) for amenidad in lista):
+        raise ValueError("Cada amenidad debe ser texto.")
     return lista
 
 
@@ -73,12 +77,17 @@ class ImputadorPorGrupo(Transformador):
         self.n_grupos = n_grupos
 
     def aprender(self, df):
+        mediana_global = df[self.columna].median()
+        if pd.isna(mediana_global):
+            raise ValueError(
+                f"{self.nombre}: no hay valores disponibles para calcular la mediana."
+            )
         tramos = pd.qcut(df[self.agrupador], q=self.n_grupos, duplicates="drop")
         medianas = df[self.columna].groupby(tramos, observed=True).median()
         return {
             "tramos": tramos.cat.categories,
             "medianas": {iv: float(m) for iv, m in medianas.items()},
-            "global": float(df[self.columna].median()),
+            "global": float(mediana_global),
         }
 
     def aplicar(self, df):
