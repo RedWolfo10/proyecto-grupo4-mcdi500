@@ -19,7 +19,9 @@
     "F4/figuras/fig3_desempeno_dormitorios.png",
     "F4/figuras/fig4_ingresos_comuna_dormitorios.png",
     "F4/figuras/fig5_comodidades_cuartil_superior.png",
-    "F4/figuras/fig6_resenas_vs_declarado.png"
+    "F4/figuras/fig6a_resenas_vs_declarado.png",
+    "F4/figuras/fig6b_quejas_por_comodidad.png",
+    "F4/figuras/fig6c_resenas_en_ingles.png"
   ],
   "controles_superados": 8
 }
