@@ -82,7 +82,7 @@ apartado 27).
 ### Agregado
 
 - `src/resenas.py`: procesa `reviews_detalladas.csv` (no versionado, D7) a un
-  agregado anónimo por alojamiento: idioma inferido por palabras funcionales
+  agregado anónimo por alojamiento (ventana de últimos 12 meses, alineada con D2): idioma inferido por palabras funcionales
   (D6) y % de reseñas que mencionan cada comodidad (D11). No cargan ni salen
   nombres ni ids de huéspedes (D5).
 - `data/processed/resenas_por_listing.csv`: 3.313 filas, 18 columnas, sin
@@ -94,6 +94,5 @@ apartado 27).
 
 ### Cambiado
 
-- D6 pasa a Tomada (heurística de idioma; ~9 % inglés, >15 % en Recoleta y
-  Lo Barnechea). Nueva D11 en `docs/registro_decisiones.md`.
+- D6 pasa a Tomada (heurística de idioma; ~7 % inglés, ~20 % en Lo Barnechea). Nueva D11 en `docs/registro_decisiones.md`.
 - `docs/hallazgos_f4.csv`: nueva fila para fig6.

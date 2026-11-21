@@ -15,7 +15,7 @@ README del proyecto,organización del repositorio,Implementado,Sección 9 · gen
 Validación técnica y pruebas,proceso,Implementado,Secciones 4.1 y 7 · asserts,"Casos normal, límite y excepciones"
 Datos públicos de Inside Airbnb,proceso,Implementado,Sección 5 · FICHA y procedencia,"Ficha, cita APA 7 y evaluación"
 Preparación y análisis de los datos,flujo reproducible,Implementado,Muestra estratificada + Fase 2,src/generar_muestra.py y F2/
-Inferencia del idioma de las reseñas,proceso,Implementado,src/resenas.py · inferir_idioma,~9 % ingles global; >15 % en Recoleta y Lo Barnechea (D6)
+Inferencia del idioma de las reseñas,proceso,Implementado,src/resenas.py · inferir_idioma,~7 % ingles global; ~20 % en Lo Barnechea (D6)
 Indicadores por comuna y configuración,proceso,Implementado,src/visualizacion.py · resumen_desempeno,Medianas cuartiles y % en el tope por grupo (D10)
 Visualizaciones e informe final,herramienta,Implementado,F4/S3_F4_Visualizacion_Comunicacion.ipynb,5 figuras en F4/figuras + hallazgos_f4.csv
 Clases y pipeline (F3),proceso,Implementado,Cuaderno F3 · src/transformadores.py y src/pipeline.py,Pipeline reproduce procesado F2 (3313 filas, 26 columnas)

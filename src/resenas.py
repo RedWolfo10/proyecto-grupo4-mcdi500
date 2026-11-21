@@ -93,14 +93,21 @@ def contar_menciones(comentarios, keywords=None):
             for col, patron in keywords.items()}
 
 
-def procesar_resenas(ruta, ids_alojamientos, ruta_salida=None):
+def procesar_resenas(ruta, ids_alojamientos, ruta_salida=None, meses=12):
     """Del detallado a la tabla anonima por alojamiento.
 
     Devuelve una fila por alojamiento de la muestra: cuantas resenas tiene,
     que porcentaje esta en cada idioma inferido y que porcentaje menciona cada
     comodidad mapeada. No sale ningun texto, nombre ni id de persona.
+
+    ``meses`` acota la ventana hacia atras desde la fecha maxima del archivo:
+    el procesado de F2 trabaja con resenas de los ultimos 12 meses (D2), asi
+    que por defecto el agregado mira el mismo periodo y no mezcla epocas.
     """
     resenas = cargar_resenas(ruta, ids_alojamientos)
+    if meses:
+        corte = resenas["date"].max() - pd.Timedelta(days=int(meses * 30.4))
+        resenas = resenas[resenas["date"] >= corte].reset_index(drop=True)
     resenas["idioma"] = inferir_idioma(resenas["comments"])
     menciones = pd.DataFrame(contar_menciones(resenas["comments"]))
     resenas = pd.concat([resenas[["listing_id", "idioma"]], menciones], axis=1)
