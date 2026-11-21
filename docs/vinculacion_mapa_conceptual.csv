@@ -16,8 +16,8 @@ Validación técnica y pruebas,proceso,Implementado,Secciones 4.1 y 7 · asserts
 Datos públicos de Inside Airbnb,proceso,Implementado,Sección 5 · FICHA y procedencia,"Ficha, cita APA 7 y evaluación"
 Preparación y análisis de los datos,flujo reproducible,Implementado,Muestra estratificada + Fase 2,src/generar_muestra.py y F2/
 Inferencia del idioma de las reseñas,proceso,Pendiente,-,Decisión D6 abierta para F4; requiere reviews.csv.gz
-Indicadores por comuna y configuración,proceso,Proyectado (F4),-,Objetivos específicos 3 y 4
-Visualizaciones e informe final,herramienta,Proyectado (F4),-,Matplotlib/Seaborn + informe técnico
+Indicadores por comuna y configuración,proceso,Implementado,src/visualizacion.py · resumen_desempeno,Medianas cuartiles y % en el tope por grupo (D10)
+Visualizaciones e informe final,herramienta,Implementado,F4/S3_F4_Visualizacion_Comunicacion.ipynb,5 figuras en F4/figuras + hallazgos_f4.csv
 Clases y pipeline (F3),proceso,Implementado,Cuaderno F3 · src/transformadores.py y src/pipeline.py,Pipeline reproduce procesado F2 (3313 filas, 26 columnas)
 Medición de eficiencia (F3),proceso,Implementado,Cuaderno F3 · src/medicion.py,map/bucle gana: 0,018 s y 1 MB vs 0,035 s y 54 MB (D9)
 Escalamiento de variables (z-score),decisión técnica,Descartado,Cuaderno F2 · sección 6,Proyecto descriptivo: no aplica

@@ -1,0 +1,6 @@
+figura,hallazgo,evidencia
+fig1_ocupacion_comuna,La ocupación mediana está repartida parejo entre comunas,Macul encabeza con 120 noches medianas (n=37); Providencia combina 96 noches con mucha oferta
+fig2_precio_ocupacion_comuna,Precio y ocupación suben juntos por comuna,Las comunas caras no pierden demanda: correlación positiva entre mediana de precio y de ocupación
+fig3_desempeno_dormitorios,"1 dormitorio ocupa más, más dormitorios cobran más",Tensión ocupación-precio que se resuelve mirando ingresos estimados
+fig4_ingresos_comuna_dormitorios,2 dormitorios en el oriente es el punto dulce,Mayor mediana de ingresos estimados en Las Condes y Providencia con 2 dormitorios
+fig5_comodidades_cuartil_superior,Self check-in y estadías largas distinguen al cuartil superior,"Asociación, no causalidad: probablemente marcan anfitriones profesionales"
