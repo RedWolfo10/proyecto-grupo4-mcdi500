@@ -76,3 +76,24 @@ apartado 27).
 
 - Las figuras son una primera versión; el refinamiento visual queda para un
   commit posterior del equipo.
+
+## [F4] 2026-11-20 (reseñas)
+
+### Agregado
+
+- `src/resenas.py`: procesa `reviews_detalladas.csv` (no versionado, D7) a un
+  agregado anónimo por alojamiento: idioma inferido por palabras funcionales
+  (D6) y % de reseñas que mencionan cada comodidad (D11). No cargan ni salen
+  nombres ni ids de huéspedes (D5).
+- `data/processed/resenas_por_listing.csv`: 3.313 filas, 18 columnas, sin
+  datos personales — versionable.
+- Sección 7 del cuaderno F4 con `fig6_resenas_vs_declarado.png`: lo declarado
+  por el anfitrión vs. lo mencionado por huéspedes, y % de reseñas en inglés
+  por comuna.
+- `.gitignore`: `data/raw/reviews*.csv` (el detallado trae datos personales).
+
+### Cambiado
+
+- D6 pasa a Tomada (heurística de idioma; ~9 % inglés, >15 % en Recoleta y
+  Lo Barnechea). Nueva D11 en `docs/registro_decisiones.md`.
+- `docs/hallazgos_f4.csv`: nueva fila para fig6.
