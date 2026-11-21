@@ -52,3 +52,47 @@ apartado 27).
 - Trabajo por ramas integrado mediante pull request (PR #1,
   `feature/f3-ajustes-cuaderno`; rama `new-feature`). Responde a la
   observación de la Sumativa 1 sobre distribución del desarrollo.
+
+## [F4] 2026-11-20
+
+### Agregado
+
+- `F4/S3_F4_Visualizacion_Comunicacion.ipynb`: cuaderno de la fase final.
+  Carga `listings_procesado.csv`, verifica el contrato de F2 (8 controles),
+  prueba las funciones nuevas (caso normal, límite y excepción) y responde
+  las tres preguntas operativas con 5 figuras exportadas a `F4/figuras/`.
+- `src/visualizacion.py`: módulo nuevo con `resumen_desempeno`,
+  `cuartil_superior`, `comparar_amenidades` y `guardar_figura`. Respeta D10:
+  todo reporta mediana, cuartiles y % en el tope de 255 noches.
+- `docs/hallazgos_f4.csv` y `docs/metadatos_f4.json`: hallazgos por figura
+  y metadatos de ejecución de la fase.
+
+### Cambiado
+
+- `docs/vinculacion_mapa_conceptual.csv`: "Indicadores por comuna" y
+  "Visualizaciones e informe final" pasan de Proyectado (F4) a Implementado.
+
+### Notas
+
+- Las figuras son una primera versión; el refinamiento visual queda para un
+  commit posterior del equipo.
+
+## [F4] 2026-11-20 (reseñas)
+
+### Agregado
+
+- `src/resenas.py`: procesa `reviews_detalladas.csv` (no versionado, D7) a un
+  agregado anónimo por alojamiento (ventana de últimos 12 meses, alineada con D2): idioma inferido por palabras funcionales
+  (D6) y % de reseñas que mencionan cada comodidad (D11). No cargan ni salen
+  nombres ni ids de huéspedes (D5).
+- `data/processed/resenas_por_listing.csv`: 3.313 filas, 18 columnas, sin
+  datos personales — versionable.
+- Sección 7 del cuaderno F4 con `fig6_resenas_vs_declarado.png`: lo declarado
+  por el anfitrión vs. lo mencionado por huéspedes, y % de reseñas en inglés
+  por comuna.
+- `.gitignore`: `data/raw/reviews*.csv` (el detallado trae datos personales).
+
+### Cambiado
+
+- D6 pasa a Tomada (heurística de idioma; ~7 % inglés, ~20 % en Lo Barnechea). Nueva D11 en `docs/registro_decisiones.md`.
+- `docs/hallazgos_f4.csv`: nueva fila para fig6.
