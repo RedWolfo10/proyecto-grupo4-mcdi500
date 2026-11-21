@@ -85,12 +85,27 @@ def inferir_idioma(comentarios):
     return ganador
 
 
+# Mencionar no es valorar: "el wifi no funcionaba" tambien es una mencion.
+# Como el archivo no trae puntaje por resena, se estima el contexto mirando
+# marcadores negativos en los 50 caracteres que rodean la mencion.
+MARCADORES_NEG = (r"no funciona|no funcion|didn't work|not work|broken|roto|rota|"
+                  r"malo|mala|p[eé]simo|problem|problema|reclamo|queja|dirty|sucio|sucia|"
+                  r"falta|missing|no hab[ií]a|no hay|there was no|there is no|"
+                  r"doesn't have|did not have|lento|lenta|slow|horrible|terrible")
+
+
 def contar_menciones(comentarios, keywords=None):
-    """Cuenta, por comodidad, en cuantas resenas aparece alguna mencion."""
+    """Cuenta menciones por comodidad y que fraccion tiene contexto negativo."""
     keywords = keywords or KEYWORDS_AMENIDADES
     texto = comentarios.str.lower().fillna("")
-    return {col: texto.str.contains(patron, regex=True)
-            for col, patron in keywords.items()}
+    resultado = {}
+    for col, patron in keywords.items():
+        menciona = texto.str.contains(patron, regex=True)
+        ventanas = texto[menciona].apply(
+            lambda c: " | ".join(re.findall(r".{0,50}(?:" + patron + r").{0,50}", c)))
+        neg = ventanas.str.contains(MARCADORES_NEG, regex=True)
+        resultado[col] = (menciona, neg.reindex(texto.index, fill_value=False))
+    return resultado
 
 
 def procesar_resenas(ruta, ids_alojamientos, ruta_salida=None, meses=12):
@@ -109,14 +124,20 @@ def procesar_resenas(ruta, ids_alojamientos, ruta_salida=None, meses=12):
         corte = resenas["date"].max() - pd.Timedelta(days=int(meses * 30.4))
         resenas = resenas[resenas["date"] >= corte].reset_index(drop=True)
     resenas["idioma"] = inferir_idioma(resenas["comments"])
-    menciones = pd.DataFrame(contar_menciones(resenas["comments"]))
-    resenas = pd.concat([resenas[["listing_id", "idioma"]], menciones], axis=1)
+    menciones = contar_menciones(resenas["comments"])
+    resenas = pd.concat(
+        [resenas[["listing_id", "idioma"]],
+         pd.DataFrame({c: m for c, (m, _) in menciones.items()}),
+         pd.DataFrame({f"neg_{c}": n for c, (_, n) in menciones.items()})],
+        axis=1)
 
+    columnas_menc = {f"menc_{c[5:]}": (c, "mean") for c in menciones}
+    columnas_neg = {f"neg_{c[5:]}": (f"neg_{c}", "mean") for c in menciones}
     agregado = resenas.groupby("listing_id").agg(
         n_resenas=("idioma", "size"),
         pct_en=("idioma", lambda s: (s == "en").mean()),
         pct_es=("idioma", lambda s: (s == "es").mean()),
-        **{f"menc_{c[5:]}": (c, "mean") for c in menciones.columns},
+        **columnas_menc, **columnas_neg,
     ).reset_index()
 
     if ruta_salida:
