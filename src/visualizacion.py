@@ -26,7 +26,8 @@ def resumen_desempeno(df, grupo):
     Devuelve una tabla con una fila por categoría: tamaño, mediana y cuartiles
     de la ocupación, porcentaje en el tope de 255 noches, precio mediano,
     ingresos medianos e ingresos medianos normalizados por huésped
-    (``accommodates``) y por dormitorio (``bedrooms`` > 0). Ordenada por
+    (``accommodates``) y por dormitorio (``bedrooms`` > 0); las dos últimas
+    solo aparecen cuando las columnas divisor existen. Ordenada por
     ocupación mediana descendente.
     """
     if grupo not in df.columns:
@@ -35,7 +36,7 @@ def resumen_desempeno(df, grupo):
     filas = []
     for valor, sub in df.groupby(grupo, observed=True):
         ocup = sub[OCUPACION]
-        filas.append({
+        fila = {
             grupo: valor,
             "n": len(sub),
             "ocupacion_mediana": ocup.median(),
@@ -44,11 +45,14 @@ def resumen_desempeno(df, grupo):
             "pct_en_tope": (ocup >= TOPE_OCUPACION).mean(),
             "precio_mediano": sub[PRECIO].median(),
             "ingresos_medianos": sub[INGRESOS].median(),
-            "ingreso_huesped_mediano":
-                (sub[INGRESOS] / sub["accommodates"]).median(),
-            "ingreso_dormitorio_mediano":
-                (sub[INGRESOS] / sub["bedrooms"].where(sub["bedrooms"] > 0)).median(),
-        })
+        }
+        if "accommodates" in sub.columns:
+            fila["ingreso_huesped_mediano"] = (sub[INGRESOS] / sub["accommodates"]).median()
+        if "bedrooms" in sub.columns:
+            fila["ingreso_dormitorio_mediano"] = (
+                sub[INGRESOS] / sub["bedrooms"].where(sub["bedrooms"] > 0)
+            ).median()
+        filas.append(fila)
     return pd.DataFrame(filas).sort_values("ocupacion_mediana", ascending=False)
 
 
