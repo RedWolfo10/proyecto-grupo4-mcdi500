@@ -44,11 +44,11 @@ class CompararAmenidadesTests(unittest.TestCase):
         })
         comp = comparar_amenidades(df, mascara).set_index("comodidad")
 
-        self.assertAlmostEqual(comp.loc["amen_presente_top", "diferencia"], 1.0)
-        self.assertTrue(comp.loc["amen_presente_top", "significativa_bonf"])
-        self.assertFalse(comp.loc["amen_pareja", "significativa_bonf"])
-        self.assertLessEqual(comp.loc["amen_pareja", "ic_inf"], 0)
-        self.assertGreaterEqual(comp.loc["amen_pareja", "ic_sup"], 0)
+        self.assertAlmostEqual(comp.loc["presente_top", "diferencia"], 1.0)
+        self.assertTrue(comp.loc["presente_top", "significativa_bonf"])
+        self.assertFalse(comp.loc["pareja", "significativa_bonf"])
+        self.assertLessEqual(comp.loc["pareja", "ic_inf"], 0)
+        self.assertGreaterEqual(comp.loc["pareja", "ic_sup"], 0)
 
 
 if __name__ == "__main__":
