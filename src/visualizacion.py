@@ -12,7 +12,9 @@ grupo quedó pegado en el tope.
 
 import os
 
+import numpy as np
 import pandas as pd
+from scipy import stats
 
 OCUPACION = "estimated_occupancy_l365d"
 PRECIO = "price_clp"
@@ -65,31 +67,47 @@ def cuartil_superior(df, columna=OCUPACION):
     return df[columna] >= df[columna].quantile(0.75)
 
 
-def comparar_amenidades(df, mascara, columnas_amen=None):
+def comparar_amenidades(df, mascara, columnas_amen=None, alfa=0.05):
     """Compara la frecuencia de cada comodidad dentro y fuera de ``mascara``.
 
     Además de la frecuencia en cada grupo, calcula la mediana de ocupación de
     los alojamientos que tienen la comodidad frente a los que no, que es lo que
     en realidad le importa al perfil buscado.
+
+    La diferencia de frecuencias viene con su intervalo de confianza del
+    1 - ``alfa`` (aproximación normal para diferencia de proporciones) y con
+    la corrección de Bonferroni por comparar muchas comodidades a la vez:
+    ``significativa_bonf`` indica cuáles diferencias sobreviven al umbral
+    ajustado ``alfa / n_comodidades``.
     """
     if columnas_amen is None:
         columnas_amen = [c for c in df.columns if c.startswith("amen_")]
     if not columnas_amen:
         raise ValueError("No se encontraron columnas binarias 'amen_'.")
 
+    n_top, n_resto = int(mascara.sum()), int((~mascara).sum())
+    z = stats.norm.ppf(1 - alfa / 2)
+    umbral_bonf = alfa / len(columnas_amen)
+
     filas = []
     for col in columnas_amen:
-        dentro = df.loc[mascara, col].mean()
-        fuera = df.loc[~mascara, col].mean()
-        con = df.loc[df[col] == 1, OCUPACION].median()
-        sin = df.loc[df[col] == 0, OCUPACION].median()
+        p_top = df.loc[mascara, col].mean()
+        p_resto = df.loc[~mascara, col].mean()
+        dif = p_top - p_resto
+        error = np.sqrt(p_top * (1 - p_top) / n_top
+                        + p_resto * (1 - p_resto) / n_resto)
+        p_valor = 2 * stats.norm.sf(abs(dif / error)) if error > 0 else 1.0
         filas.append({
             "comodidad": col.replace("amen_", ""),
-            "frec_top": dentro,
-            "frec_resto": fuera,
-            "diferencia": dentro - fuera,
-            "ocup_con": con,
-            "ocup_sin": sin,
+            "frec_top": p_top,
+            "frec_resto": p_resto,
+            "diferencia": dif,
+            "ic_inf": dif - z * error,
+            "ic_sup": dif + z * error,
+            "p_valor": p_valor,
+            "significativa_bonf": p_valor < umbral_bonf,
+            "ocup_con": df.loc[df[col] == 1, OCUPACION].median(),
+            "ocup_sin": df.loc[df[col] == 0, OCUPACION].median(),
         })
     return pd.DataFrame(filas).sort_values("diferencia", ascending=False)
 

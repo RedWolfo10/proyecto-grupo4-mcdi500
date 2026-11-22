@@ -5,7 +5,7 @@ import pandas as pd
 
 sys.path.insert(0, "src")
 
-from visualizacion import resumen_desempeno
+from visualizacion import comparar_amenidades, resumen_desempeno
 
 
 def datos():
@@ -32,6 +32,23 @@ class ResumenDesempenoTests(unittest.TestCase):
     def test_columna_inexistente_lanza_keyerror(self):
         with self.assertRaises(KeyError):
             resumen_desempeno(datos(), "columna_que_no_existe")
+
+
+class CompararAmenidadesTests(unittest.TestCase):
+    def test_intervalo_y_bonferroni(self):
+        mascara = pd.Series([True, True, False, False])
+        df = pd.DataFrame({
+            "estimated_occupancy_l365d": [100, 200, 50, 255],
+            "amen_presente_top": [1, 1, 0, 0],
+            "amen_pareja": [1, 0, 1, 0],
+        })
+        comp = comparar_amenidades(df, mascara).set_index("comodidad")
+
+        self.assertAlmostEqual(comp.loc["amen_presente_top", "diferencia"], 1.0)
+        self.assertTrue(comp.loc["amen_presente_top", "significativa_bonf"])
+        self.assertFalse(comp.loc["amen_pareja", "significativa_bonf"])
+        self.assertLessEqual(comp.loc["amen_pareja", "ic_inf"], 0)
+        self.assertGreaterEqual(comp.loc["amen_pareja", "ic_sup"], 0)
 
 
 if __name__ == "__main__":
