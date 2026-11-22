@@ -32,3 +32,8 @@ desktop.ini
 
 # Material docente del curso (referencia, no versionar)
 Material_Didactico_Semana_3/
+
+# Reseñas: el detallado trae nombres y comentarios (D5/D7) y el liviano
+# no aporta al pipeline; el insumo versionable es el agregado anonimizado
+# de data/processed/resenas_por_listing.csv
+data/raw/reviews*.csv

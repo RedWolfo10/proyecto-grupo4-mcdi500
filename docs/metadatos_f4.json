@@ -1,0 +1,27 @@
+{
+  "fase": "F4",
+  "fecha_ejecucion": "2026-11-20",
+  "semilla": 42,
+  "python": "3.14.4",
+  "dependencias": {
+    "numpy": "2.5.4",
+    "pandas": "3.1.1",
+    "matplotlib": "3.11.2",
+    "seaborn": "0.13.2"
+  },
+  "entradas": [
+    "data/processed/listings_procesado.csv",
+    "data/processed/resenas_por_listing.csv"
+  ],
+  "figuras": [
+    "F4/figuras/fig1_ocupacion_comuna.png",
+    "F4/figuras/fig2_precio_ocupacion_comuna.png",
+    "F4/figuras/fig3_desempeno_dormitorios.png",
+    "F4/figuras/fig4_ingresos_comuna_dormitorios.png",
+    "F4/figuras/fig5_comodidades_cuartil_superior.png",
+    "F4/figuras/fig6a_resenas_vs_declarado.png",
+    "F4/figuras/fig6b_quejas_por_comodidad.png",
+    "F4/figuras/fig6c_resenas_en_ingles.png"
+  ],
+  "controles_superados": 8
+}
