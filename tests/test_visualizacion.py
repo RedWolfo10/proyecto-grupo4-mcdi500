@@ -36,15 +36,15 @@ class ResumenDesempenoTests(unittest.TestCase):
 
 class CompararAmenidadesTests(unittest.TestCase):
     def test_intervalo_y_bonferroni(self):
-        mascara = pd.Series([True, True, False, False])
+        mascara = pd.Series([True] * 50 + [False] * 50)
         df = pd.DataFrame({
-            "estimated_occupancy_l365d": [100, 200, 50, 255],
-            "amen_presente_top": [1, 1, 0, 0],
-            "amen_pareja": [1, 0, 1, 0],
+            "estimated_occupancy_l365d": [200] * 50 + [50] * 50,
+            "amen_presente_top": [1] * 45 + [0] * 5 + [0] * 25 + [1] * 25,
+            "amen_pareja": [1] * 25 + [0] * 25 + [1] * 25 + [0] * 25,
         })
         comp = comparar_amenidades(df, mascara).set_index("comodidad")
 
-        self.assertAlmostEqual(comp.loc["presente_top", "diferencia"], 1.0)
+        self.assertAlmostEqual(comp.loc["presente_top", "diferencia"], 0.4)
         self.assertTrue(comp.loc["presente_top", "significativa_bonf"])
         self.assertFalse(comp.loc["pareja", "significativa_bonf"])
         self.assertLessEqual(comp.loc["pareja", "ic_inf"], 0)
