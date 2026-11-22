@@ -4,8 +4,12 @@ Este modulo lo genera el cuaderno de la Fase 1 y lo importan las fases que
 vienen. Proyecto: alojamientos Airbnb en Santiago de Chile.
 """
 
-import re
 import hashlib
+import hmac
+import re
+import secrets
+
+_CLAVE_SEUDONIMIZACION = secrets.token_bytes(32)
 
 
 class ProyectoError(Exception):
@@ -36,11 +40,10 @@ def normalizar_columnas(nombres):
 
 
 def seudonimizar(valor, largo=12):
-    """Devuelve un codigo seudonimo estable para un identificador personal.
+    """Devuelve un codigo estable durante este proceso y aleatorio entre procesos.
 
     Se aplica a host_id (decision D5): deja contar anuncios por anfitrion
-    sin guardar el identificador original. El mismo valor de entrada da
-    siempre el mismo codigo, asi que el conteo sigue siendo valido.
+    sin guardar el identificador original. La clave aleatoria no se guarda.
 
     Ejemplo
     -------
@@ -50,7 +53,11 @@ seudonimizar(224592)  # doctest omite el valor exacto a proposito
     if not isinstance(valor, (str, int)):
         raise ProyectoError(
             f"Se esperaba texto o entero y se recibio {type(valor).__name__}.")
-    return hashlib.sha256(str(valor).encode("utf-8")).hexdigest()[:largo]
+    return hmac.new(
+        _CLAVE_SEUDONIMIZACION,
+        str(valor).encode("utf-8"),
+        hashlib.sha256,
+    ).hexdigest()[:largo]
 
 
 def aplanar(estructura, prefijo="", separador="."):

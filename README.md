@@ -22,8 +22,8 @@ Un inversionista que está evaluando comprar un departamento para arriendo turí
 
        python src/generar_muestra.py ruta/al/listings.csv
 
-   El script es determinista: con la misma entrada da la misma muestra,
-   ya anonimizada (sin nombres, enlaces ni fotos; `host_id` con hash).
+   El muestreo es reproducible con la misma entrada; cada ejecución genera
+   códigos aleatorios nuevos para `host_id` (sin nombres, enlaces ni fotos).
 
 ## Estructura del repositorio
 ```
