@@ -24,8 +24,10 @@ def resumen_desempeno(df, grupo):
     """Resume el desempeño por cada valor de ``grupo``.
 
     Devuelve una tabla con una fila por categoría: tamaño, mediana y cuartiles
-    de la ocupación, porcentaje en el tope de 255 noches, precio mediano e
-    ingresos medianos. Ordenada por ocupación mediana descendente.
+    de la ocupación, porcentaje en el tope de 255 noches, precio mediano,
+    ingresos medianos e ingresos medianos normalizados por huésped
+    (``accommodates``) y por dormitorio (``bedrooms`` > 0). Ordenada por
+    ocupación mediana descendente.
     """
     if grupo not in df.columns:
         raise KeyError(f"La columna '{grupo}' no existe en el conjunto.")
@@ -42,6 +44,10 @@ def resumen_desempeno(df, grupo):
             "pct_en_tope": (ocup >= TOPE_OCUPACION).mean(),
             "precio_mediano": sub[PRECIO].median(),
             "ingresos_medianos": sub[INGRESOS].median(),
+            "ingreso_huesped_mediano":
+                (sub[INGRESOS] / sub["accommodates"]).median(),
+            "ingreso_dormitorio_mediano":
+                (sub[INGRESOS] / sub["bedrooms"].where(sub["bedrooms"] > 0)).median(),
         })
     return pd.DataFrame(filas).sort_values("ocupacion_mediana", ascending=False)
 
