@@ -19,7 +19,7 @@ Uso:
 """
 
 import argparse
-import secrets
+import hashlib
 import sys
 from pathlib import Path
 
@@ -50,8 +50,8 @@ COLUMNA_ID_ANFITRION = "host_id"             # se seudonimiza, no se elimina
 
 
 def seudonimizar(valor, largo=12):
-    """Genera un codigo aleatorio para el identificador."""
-    return secrets.token_hex((largo + 1) // 2)[:largo]
+    """Codigo seudonimo estable: misma entrada -> mismo codigo."""
+    return hashlib.sha256(str(valor).encode("utf-8")).hexdigest()[:largo]
 
 
 def anonimizar(df, columnas=COLUMNAS_PERSONALES, col_id=COLUMNA_ID_ANFITRION):
@@ -59,21 +59,8 @@ def anonimizar(df, columnas=COLUMNAS_PERSONALES, col_id=COLUMNA_ID_ANFITRION):
     df = df.copy()
     presentes = [c for c in columnas if c in df.columns]
     df = df.drop(columns=presentes)
-    if col_id in df.columns:
-        ids = df[col_id].astype("string").str.strip()
-        no_vacios = ids.notna() & ids.ne("")
-        originales = set(ids[no_vacios])
-        mapa = {}
-        usados = set(originales)
-        for identificador in originales:
-            codigo = seudonimizar(identificador)
-            while codigo in usados:
-                codigo = seudonimizar(identificador)
-            mapa[identificador] = codigo
-            usados.add(codigo)
-        df[col_id] = ids.map(mapa)
-        if df[col_id].dropna().isin(originales).any():
-            raise ValueError("Quedaron identificadores originales después de anonimizar.")
+    if col_id in df.columns and df[col_id].astype(str).str.isdigit().all():
+        df[col_id] = df[col_id].map(seudonimizar)
     return df, presentes
 
 
