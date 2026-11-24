@@ -1,4 +1,3 @@
-import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -6,9 +5,7 @@ from unittest.mock import Mock
 
 import pandas as pd
 
-sys.path.insert(0, "src")
-
-import visualizacion
+from src import visualizacion
 
 
 class ResumenDesempenoTests(unittest.TestCase):

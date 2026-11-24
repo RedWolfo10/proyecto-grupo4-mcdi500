@@ -42,8 +42,16 @@ Python 3.13 o superior
     # source .venv/bin/activate      # macOS y Linux
     python -m pip install -r requirements.txt
 
-Correr los cuadernos en orden: F1, F2 y F3. Cada cuaderno
+Correr los cuadernos en orden: F1, F2, F3 y F4. Cada cuaderno
 encuentra la raíz del proyecto aunque Jupyter lo abra en su propia carpeta.
+
+Desde la raíz del proyecto, F4 se puede ejecutar con:
+
+    jupyter nbconvert --execute --inplace F4/S3_F4_Visualizacion_Comunicacion.ipynb
+
+Las pruebas automáticas se ejecutan con:
+
+    python -m unittest discover -s tests -v
 
 En la Fase 3 el pipeline de F2 se reordenó en `src/`: la carga quedó en
 `carga.py`, los pasos que aprenden del dataset son clases que heredan de
