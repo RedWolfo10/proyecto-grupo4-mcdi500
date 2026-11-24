@@ -99,9 +99,12 @@ class ImputadorPorGrupo(Transformador):
         }
 
     def aplicar(self, df):
-        tramos = pd.cut(df[self.agrupador], bins=self._parametros["tramos"])
-        mediana = tramos.map(self._parametros["medianas"])
-        mediana = mediana.fillna(self._parametros["global"])
+        if len(self._parametros["tramos"]) == 0:
+            mediana = pd.Series(self._parametros["global"], index=df.index)
+        else:
+            tramos = pd.cut(df[self.agrupador], bins=self._parametros["tramos"])
+            mediana = tramos.map(self._parametros["medianas"]).astype(float)
+            mediana = mediana.fillna(self._parametros["global"])
         df[f"{self.columna}_imputado"] = df[self.columna].isna().astype(int)
         df[self.columna] = df[self.columna].fillna(mediana)
         return df
