@@ -1,8 +1,7 @@
 {
   "fase": "F4",
-  "fecha_ejecucion": "2026-11-23",
+  "fecha_ejecucion": "2026-11-24",
   "semilla": 42,
-  "python": "3.13.17",
   "python": "3.13.17",
   "dependencias": {
     "numpy": "2.5.4",
