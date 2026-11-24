@@ -17,6 +17,12 @@ def datos():
 
 
 class ResumenDesempenoTests(unittest.TestCase):
+    def test_reporta_porcentaje_en_el_tope_por_grupo(self):
+        resumen = resumen_desempeno(datos(), "grupo").set_index("grupo")
+
+        self.assertEqual(resumen.loc["A", "pct_en_tope"], 0)
+        self.assertEqual(resumen.loc["B", "pct_en_tope"], 0.5)
+
     def test_agrega_ingresos_normalizados_por_grupo(self):
         resumen = resumen_desempeno(datos(), "grupo").set_index("grupo")
 
