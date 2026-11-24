@@ -1,11 +1,8 @@
-import sys
 import unittest
 
 import pandas as pd
 
-sys.path.insert(0, "src")
-
-from visualizacion import comparar_amenidades, resumen_desempeno
+from src.visualizacion import comparar_amenidades, resumen_desempeno
 
 
 def datos():

@@ -1,6 +1,8 @@
 # Entorno virtual: se reconstruye con requirements.txt
 .venv/
 
+*.egg-info/
+
 # Caché de Python
 __pycache__/
 *.pyc
