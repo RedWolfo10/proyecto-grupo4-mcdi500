@@ -1,11 +1,13 @@
 """Transformadores del pipeline: contrato comun y clases que aprenden del dataset."""
 
 import json
+from abc import ABC, abstractmethod
+from copy import deepcopy
 
 import numpy as np
 import pandas as pd
 
-from utilidades import normalizar_nombre
+from .utilidades import normalizar_nombre
 
 
 def parsear_amenidades(valor):
@@ -25,7 +27,7 @@ def parsear_amenidades(valor):
     return lista
 
 
-class Transformador:
+class Transformador(ABC):
     """Contrato de los pasos del pipeline.
 
     ajustar() aprende los parametros del conjunto y transformar() los aplica.
@@ -40,6 +42,10 @@ class Transformador:
     @property
     def nombre(self):
         return f"{type(self).__name__}({self.columna})"
+
+    @property
+    def parametros(self):
+        return deepcopy(self._parametros)
 
     def ajustar(self, df):
         if self.columna not in df.columns:
@@ -56,9 +62,11 @@ class Transformador:
     def ajustar_transformar(self, df):
         return self.ajustar(df).transformar(df)
 
+    @abstractmethod
     def aprender(self, df):
         raise NotImplementedError("Cada clase hija debe implementar aprender().")
 
+    @abstractmethod
     def aplicar(self, df):
         raise NotImplementedError("Cada clase hija debe implementar aplicar().")
 

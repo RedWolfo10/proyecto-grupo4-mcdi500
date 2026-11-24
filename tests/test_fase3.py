@@ -1,19 +1,25 @@
-import sys
 import tracemalloc
 import unittest
+from abc import ABC
 
 import pandas as pd
 
-sys.path.insert(0, "src")
-
-from medicion import medir
-from pipeline import Pipeline
-from transformadores import (
+from src.medicion import medir
+from src.pipeline import Pipeline
+from src.transformadores import (
     AgrupadorTopCategorias,
     BinarizadorAmenidades,
     ImputadorPorGrupo,
+    Transformador,
     parsear_amenidades,
 )
+
+
+class TransformadorTests(unittest.TestCase):
+    def test_es_clase_abstracta(self):
+        self.assertTrue(hasattr(Transformador, "__abstractmethods__"))
+        self.assertIn("aprender", Transformador.__abstractmethods__)
+        self.assertIn("aplicar", Transformador.__abstractmethods__)
 
 
 class ParsearAmenidadesTests(unittest.TestCase):
@@ -118,6 +124,15 @@ class BinarizadorAmenidadesTests(unittest.TestCase):
             BinarizadorAmenidades().ajustar(
                 pd.DataFrame({"amenities": ['["Wifi"']})
             )
+
+    def test_parametros_no_se_exponen_por_referencia(self):
+        datos = pd.DataFrame({"amenities": ['["Wifi"]', '["Kitchen"]']})
+        transformador = BinarizadorAmenidades(n_top=1).ajustar(datos)
+
+        parametros = transformador.parametros
+        parametros["top"].clear()
+
+        self.assertEqual(transformador.parametros["top"], ["Wifi"])
 
 
 class PipelineTests(unittest.TestCase):

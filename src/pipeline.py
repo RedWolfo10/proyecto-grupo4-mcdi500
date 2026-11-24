@@ -2,7 +2,7 @@
 
 import pandas as pd
 
-from transformadores import Transformador
+from .transformadores import Transformador
 
 
 class Pipeline:
