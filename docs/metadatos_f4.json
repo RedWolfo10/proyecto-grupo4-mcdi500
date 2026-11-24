@@ -3,6 +3,7 @@
   "fecha_ejecucion": "2026-11-23",
   "semilla": 42,
   "python": "3.13.17",
+  "python": "3.13.17",
   "dependencias": {
     "numpy": "2.5.4",
     "pandas": "3.1.1",
