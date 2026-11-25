@@ -12,4 +12,6 @@ medicion.comparacion,bucle vs explode()
 medicion.filas,3313
 medicion.amenidades,20
 medicion.repeticiones,7
+medicion.estadistico,minimo
+medicion.tabla,docs/eficiencia_f3.csv
 medicion.ganador,map

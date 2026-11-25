@@ -2,19 +2,19 @@
   "proyecto": "Análisis de alojamientos Airbnb en Santiago de Chile para la decisión de inversión inmobiliaria",
   "grupo": "Grupo 4",
   "fase": "F1",
-  "fecha_ejecucion": "2026-11-11",
-  "commit": "6a6eafd",
+  "fecha_ejecucion": "2026-11-24",
+  "commit": "9397168",
   "semilla": 42,
   "python": "3.14.4",
-  "sistema": "Linux 7.0.0-42-generic",
-  "interprete": ".venv/bin/python",
+  "sistema": "Linux 7.0.0-43-generic",
+  "interprete": "python",
   "entorno_virtual": true,
   "dependencias": {
     "numpy": "2.5.4",
     "pandas": "3.1.1",
     "matplotlib": "3.11.2",
     "seaborn": "0.13.2",
-    "sklearn": "1.9.1"
+    "scipy": "1.18.1"
   },
   "dataset": {
     "titulo": "Inside Airbnb - Santiago, Chile (listings detallado, muestra estratificada)",

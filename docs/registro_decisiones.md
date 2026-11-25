@@ -1,49 +1,43 @@
-# Registro de decisiones — Proyecto Airbnb Santiago (Grupo 4)
+# Registro de decisiones: Airbnb Santiago, Grupo 4
 
-Decisiones metodológicas y técnicas del proyecto, con su motivo y su estado.
-Se va actualizando cada vez que se cierra una fase.
+| N.° | Decisión | Motivo y evidencia |
+|---|---|---|
+| D1 | Analizar `room_type == "Entire home/apt"` | Se comparan viviendas completas, no habitaciones. La categoría también incluye casas; no equivale exclusivamente a departamentos. |
+| D2 | Definir actividad como reseñas en los últimos doce meses y disponibilidad futura | Se conservan `number_of_reviews_ltm > 0` y `availability_365 > 0`. El filtro puede excluir anuncios activos sin reseñas o sin disponibilidad. |
+| D3 | Usar ocupación estimada como medida principal y precio e ingresos estimados como complementos | Los ingresos se relacionan con precio y ocupación; no constituyen una evidencia independiente de desempeño. |
+| D4 | Distinguir ingresos estimados de rentabilidad | No se dispone de compra, gastos ni comisiones para calcular retorno de inversión. |
+| D5 | Eliminar nombres y enlaces y seudonimizar anfitriones antes de publicar la muestra | `src/generar_muestra.py` utiliza un mapa aleatorio que conserva relaciones dentro del archivo. Las utilidades emplean una clave efímera por proceso. No se conserva una correspondencia con los identificadores originales. |
+| D6 | Describir el idioma inferido de las reseñas, sin equipararlo a nacionalidad | Las reglas de `src/resenas.py` no tienen validación manual. Los porcentajes se ponderan por número de reseñas, no por número de anuncios. |
+| D7 | Versionar la muestra y los agregados; excluir las descargas originales y comentarios | Los archivos utilizados por F1–F4 están disponibles al clonar. Los textos y nombres de reseñantes no son necesarios para ejecutar F4. |
+| D8 | Utilizar muestreo estratificado por comuna, fracción aproximada de 27 %, semilla 42 y mínimo un caso | Se conserva la cobertura geográfica. La selección es reproducible; los seudónimos cambian al regenerar. Los resúmenes describen la muestra y no estiman totales del universo. |
+| D9 | Conservar `map` por comodidad en `BinarizadorAmenidades` | F3 compara equivalencia, mínimo de siete mediciones de tiempo y memoria en tres tamaños. Las cifras vigentes están en `docs/eficiencia_f3.csv`; no se fijan razones de rendimiento que dependan del equipo. |
+| D10 | Tratar el tope de 255 noches como censura a la derecha | Cada grupo informa porcentaje en el tope, mediana y P25–P75. No se pueden distinguir ocupaciones superiores; el efecto sobre un cuantil depende de cuántos casos estén censurados. |
+| D11 | Contrastar comodidades declaradas con menciones y contexto negativo | Las reglas de texto aportan una revisión exploratoria. Ni una mención prueba valoración ni su ausencia prueba indiferencia. El contexto negativo no constituye una queja validada. |
+| D12 | Template Method con pipeline por composición | La base abstracta fija ajuste y transformación; las clases concretas implementan aprendizaje y aplicación. Los parámetros se consultan mediante copia profunda. No se implementan estrategias de imputación intercambiables. |
+| D13 | Agrupar comunas con menos de 30 alojamientos en las tablas | Otras se calcula desde los registros originales. Los gráficos de comunas individuales excluyen ese grupo e informan cuántos casos no muestran. No se interpreta Otras como una ubicación. |
+| D14 | Comparar prevalencias con IC Newcombe-Wilson, Fisher y Bonferroni | Se manejan proporciones extremas y grupos pequeños. Los IC del 95 % son individuales; el ajuste se aplica a los p-valores. La familia global contiene veinte comodidades. |
+| D15 | Revisar confusión por comuna y capacidad manteniendo P75 global | Se comparan estratos con al menos diez anuncios en cada grupo y se corrige la familia completa de pruebas retenidas. No se afirma que este análisis controle toda la confusión. |
 
-| N.° | Decisión | Motivo y evidencia | Estado |
-|---|---|---|---|
-| D1 | Unidad de análisis: `room_type = "Entire home/apt"` | La pregunta trata sobre comprar un departamento completo; 15.383 de 18.904 anuncios son de este tipo | Tomada |
-| D2 | Alojamiento activo = `number_of_reviews_ltm > 0` y `availability_365 > 0` | Excluye anuncios inactivos; 4.786 tienen ocupación estimada cero. Cumplen 13.788 (72,9 %); de ellos 12.253 son alojamientos completos | Tomada |
-| D3 | Métrica principal: ocupación estimada; precio como segunda métrica; ingresos solo como métrica derivada | `estimated_revenue_l365d` = ocupación × precio en el 100 % de los casos: no aporta información independiente | Tomada |
-| D4 | Hablar de "ingresos estimados", nunca de rentabilidad | No hay datos de costos ni del precio de compra del departamento | Tomada |
-| D5 | Eliminar datos personales al generar la muestra (`src/generar_muestra.py`) y verificar la regla al cargar en F2 | Protección de datos de anfitriones y huéspedes; aplicarla en la generación permite versionar `data/raw/` (ver D7) | Tomada |
-| D6 | Inferir el idioma de las reseñas como aproximación a la demanda extranjera | Heurística de palabras funcionales por idioma en `src/resenas.py` (no hay clasificador instalado); ~7 % de las reseñas recientes en inglés, ~20 % en Lo Barnechea | Tomada |
-| D7 | Las descargas originales (`*.csv.gz`) no se versionan; la muestra de `data/raw/` sí, porque llega anonimizada | El original contiene datos personales y ~50 MB; la muestra anonimizada pesa ~9 MB y no tiene datos personales | Tomada |
-| D8 | Trabajar con una muestra aleatoria estratificada por comuna (~27 %, semilla 42, mínimo 1 registro por comuna) | El archivo detallado pesa ~50 MB; la muestra conserva las 32 comunas y deja los cuadernos livianos. `src/generar_muestra.py` la reproduce de forma determinista | Tomada |
-| D9 | `BinarizadorAmenidades` conserva la implementación con `map` por comodidad en vez de la vectorizada (`explode` + `pivot_table`) | La medición en F3 mostró que la vectorizada es ~2× más lenta y usa ~50× más memoria (54 MB vs 1 MB) al materializar una matriz densa con ~70 comodidades crudas cuando solo se usan 20 | Tomada |
-| D11 | Minar menciones de comodidades en las reseñas detalladas y contrastarlas con lo declarado por el anfitrión | Responde si los huéspedes valoran las `amen_*`: solo ~7 % de las reseñas menciona siquiera la TV, y nombrar no es valorar: se estima contexto negativo junto a la mención (WiFi 22 % en queja, TV 3 %); el agregado se hace por alojamiento y los textos/nombres nunca salen a data/processed (D5) | Tomada |
-| D10 | El tope de 255 noches de `estimated_occupancy_l365d` se trata como censura a la derecha | Al comparar perfiles se reporta el % de alojamientos en el tope por grupo, se usan mediana y cuartiles (robustas al tope) y el cuartil superior se declara potencialmente subestimado. Responde a la observación de la Sumativa 1 | Tomada |
+## Privacidad
 
-## Datos personales eliminados (D5)
+La muestra no contiene nombres, descripciones ni enlaces de perfiles. `host_id`
+es un seudónimo para conservar relaciones entre anuncios, no una variable de
+magnitud. La muestra ya versionada se utiliza sin regenerarla en F1–F4.
 
-Se aplican en `src/generar_muestra.py` al producir la muestra versionada, y la
-primera función del pipeline F2 las reaplica y las verifica al cargar
-(idempotente: si el archivo cambiara, las vuelve a eliminar).
+El procesamiento opcional del detallado de reseñas utiliza comentarios en
+memoria para producir `resenas_por_listing.csv`. Ese agregado no conserva
+texto, nombres ni identificadores de reseñantes. El archivo de comentarios no
+se requiere para ejecutar los resultados de F4.
 
-- **listings:** se eliminan `name`, `description` (pueden traer nombres o
-  teléfonos), `host_name`, `host_about`, `host_location`, `host_url`,
-  `host_profile_id`, `host_profile_url`, `host_picture_url`,
-  `host_thumbnail_url`, `picture_url` y `listing_url`. `host_id` se reemplaza
-  por un código seudonimizado (hash), para poder seguir contando anuncios por
-  anfitrión.
-- **reviews:** el detallado (`reviews_detalladas.csv`, 169 MB) no entra al
-  análisis con nombres ni ids: `src/resenas.py` solo carga `listing_id`,
-  `date` y `comments`, y exporta un agregado por alojamiento (idioma inferido
-  y % de menciones por comodidad) sin ningún dato personal.
+## Limitaciones
 
-## Sesgos declarados
+La captura es transversal. El filtro de actividad introduce selección y sesgo
+de supervivencia, sin que pueda cuantificarse aquí su dirección o magnitud.
+La ocupación no corresponde a reservas observadas y está limitada a 255 noches.
+Los ingresos heredan sus supuestos y utilizan el precio publicado.
 
-- **Supervivencia:** la captura solo trae los anuncios que estaban publicados
-  en septiembre de 2026; los que dejaron de operar no salen, así que el
-  desempeño típico queda sobrestimado.
-- **Estimación de la ocupación:** `estimated_occupancy_l365d` se estima a
-  partir de las reseñas (correlación 0,87 con `number_of_reviews_ltm`) y tiene
-  un tope de 255 noches (~70 % del año).
-- **Ingresos:** heredan el sesgo de la ocupación y asumen que el precio
-  publicado se mantuvo todo el año.
-- **Muestra (D8):** los indicadores se calculan sobre la muestra, no sobre el
-  universo de 18.904 anuncios; la estratificación por comuna conserva la
-  representación geográfica.
+La muestra conserva cobertura por comuna, pero los resúmenes globales no usan
+ponderadores para estimar el universo. Los intervalos estadísticos tampoco
+incorporan por completo la estratificación ni la dependencia entre anuncios
+del mismo anfitrión. Las diferencias se interpretan como asociaciones
+exploratorias, no como efectos causales.
