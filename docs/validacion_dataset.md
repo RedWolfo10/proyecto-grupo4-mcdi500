@@ -1,4 +1,4 @@
-# Validación del dataset — MCDI500
+# Validación del dataset: MCDI500
 
 **Archivo:** `listings.csv` · 5106 filas × 78 columnas
 

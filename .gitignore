@@ -39,3 +39,21 @@ Material_Didactico_Semana_3/
 # no aporta al pipeline; el insumo versionable es el agregado anonimizado
 # de data/processed/resenas_por_listing.csv
 data/raw/reviews*.csv
+
+# Artefactos generados: se regeneran al ejecutar los cuadernos o la
+# cadena del informe; no se versionan (el informe se entrega fuera del repo)
+docs/Informe_Final_*
+docs/mapa_conceptual.png
+docs/diagrama_clases_f3.png
+docs/guion_video_f4.md
+F4/diapositivas/
+docs/comparacion_comodidades.csv
+docs/comodidades_por_estratos.csv
+docs/resumen_comodidades_estratos.csv
+docs/configuracion_dormitorios.csv
+docs/configuracion_banos.csv
+docs/configuracion_capacidad.csv
+docs/conteos_comuna_dormitorios.csv
+docs/resenas_comodidades.csv
+docs/idioma_comunas.csv
+docs/eficiencia_f3.csv
