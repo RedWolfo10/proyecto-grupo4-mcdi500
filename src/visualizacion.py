@@ -22,6 +22,20 @@ INGRESOS = "estimated_revenue_l365d"
 TOPE_OCUPACION = 255
 
 
+def agrupar_comunas(df, minimo=30):
+    if minimo < 1:
+        raise ValueError("El mínimo debe ser positivo.")
+    columna = "neighbourhood_cleansed"
+    if df[columna].isna().any():
+        raise ValueError("Las comunas no pueden contener nulos.")
+    resultado = df.copy()
+    conteos = resultado[columna].value_counts()
+    resultado["comuna_agrupada"] = resultado[columna].where(
+        resultado[columna].map(conteos) >= minimo, "Otras comunas"
+    )
+    return resultado
+
+
 def resumen_desempeno(df, grupo):
     """Resume el desempeño por cada valor de ``grupo``.
 
@@ -46,10 +60,16 @@ def resumen_desempeno(df, grupo):
             "ocupacion_q3": ocup.quantile(0.75),
             "pct_en_tope": (ocup >= TOPE_OCUPACION).mean(),
             "precio_mediano": sub[PRECIO].median(),
+            "precio_q1": sub[PRECIO].quantile(0.25),
+            "precio_q3": sub[PRECIO].quantile(0.75),
             "ingresos_medianos": sub[INGRESOS].median(),
+            "ingresos_q1": sub[INGRESOS].quantile(0.25),
+            "ingresos_q3": sub[INGRESOS].quantile(0.75),
         }
         if "accommodates" in sub.columns:
-            fila["ingreso_huesped_mediano"] = (sub[INGRESOS] / sub["accommodates"]).median()
+            fila["ingreso_huesped_mediano"] = (
+                sub[INGRESOS] / sub["accommodates"].where(sub["accommodates"] > 0)
+            ).median()
         if "bedrooms" in sub.columns:
             fila["ingreso_dormitorio_mediano"] = (
                 sub[INGRESOS] / sub["bedrooms"].where(sub["bedrooms"] > 0)
@@ -67,49 +87,95 @@ def cuartil_superior(df, columna=OCUPACION):
     return df[columna] >= df[columna].quantile(0.75)
 
 
+def intervalo_wilson(exitos, n, alfa=0.05):
+    if n <= 0 or not 0 < alfa < 1:
+        raise ValueError("Se requieren observaciones y alfa entre 0 y 1.")
+    p = exitos / n
+    z = stats.norm.ppf(1 - alfa / 2)
+    divisor = 1 + z ** 2 / n
+    centro = (p + z ** 2 / (2 * n)) / divisor
+    margen = z * np.sqrt(p * (1 - p) / n + z ** 2 / (4 * n ** 2)) / divisor
+    return centro - margen, centro + margen
+
+
 def comparar_amenidades(df, mascara, columnas_amen=None, alfa=0.05):
-    """Compara la frecuencia de cada comodidad dentro y fuera de ``mascara``.
+    """Diferencia de prevalencias, IC Newcombe-Wilson y prueba exacta de Fisher.
 
-    Además de la frecuencia en cada grupo, calcula la mediana de ocupación de
-    los alojamientos que tienen la comodidad frente a los que no, que es lo que
-    en realidad le importa al perfil buscado.
-
-    La diferencia de frecuencias viene con su intervalo de confianza del
-    1 - ``alfa`` (aproximación normal para diferencia de proporciones) y con
-    la corrección de Bonferroni por comparar muchas comodidades a la vez:
-    ``significativa_bonf`` indica cuáles diferencias sobreviven al umbral
-    ajustado ``alfa / n_comodidades``.
+    Los IC son individuales. Bonferroni corrige los p-valores de la familia
+    de comodidades evaluada, no los IC. El análisis es observacional.
     """
     if columnas_amen is None:
         columnas_amen = [c for c in df.columns if c.startswith("amen_")]
     if not columnas_amen:
         raise ValueError("No se encontraron columnas binarias 'amen_'.")
-
+    if not 0 < alfa < 1:
+        raise ValueError("Alfa debe estar entre 0 y 1.")
+    if not mascara.index.equals(df.index) or mascara.isna().any() or mascara.dtype != bool:
+        raise ValueError("La máscara debe ser booleana, sin nulos y alineada con los datos.")
+    if not df[columnas_amen].isin([0, 1]).all().all():
+        raise ValueError("Las comodidades deben ser binarias y no contener nulos.")
     n_top, n_resto = int(mascara.sum()), int((~mascara).sum())
-    z = stats.norm.ppf(1 - alfa / 2)
-    umbral_bonf = alfa / len(columnas_amen)
-
+    if not n_top or not n_resto:
+        raise ValueError("Ambos grupos deben contener alojamientos.")
     filas = []
     for col in columnas_amen:
-        p_top = df.loc[mascara, col].mean()
-        p_resto = df.loc[~mascara, col].mean()
+        x_top = int(df.loc[mascara, col].sum())
+        x_resto = int(df.loc[~mascara, col].sum())
+        p_top, p_resto = x_top / n_top, x_resto / n_resto
         dif = p_top - p_resto
-        error = np.sqrt(p_top * (1 - p_top) / n_top
-                        + p_resto * (1 - p_resto) / n_resto)
-        p_valor = 2 * stats.norm.sf(abs(dif / error)) if error > 0 else 1.0
+        li_top, ls_top = intervalo_wilson(x_top, n_top, alfa)
+        li_resto, ls_resto = intervalo_wilson(x_resto, n_resto, alfa)
+        p_valor = stats.fisher_exact([[x_top, n_top - x_top],
+                                     [x_resto, n_resto - x_resto]]).pvalue
+        ajustado = min(1.0, p_valor * len(columnas_amen))
         filas.append({
-            "comodidad": col.replace("amen_", ""),
-            "frec_top": p_top,
-            "frec_resto": p_resto,
-            "diferencia": dif,
-            "ic_inf": dif - z * error,
-            "ic_sup": dif + z * error,
-            "p_valor": p_valor,
-            "significativa_bonf": p_valor < umbral_bonf,
+            "comodidad": col.removeprefix("amen_"),
+            "n_top": n_top, "n_resto": n_resto,
+            "frec_top": p_top, "frec_resto": p_resto, "diferencia": dif,
+            "ic_inf": dif - np.hypot(p_top - li_top, ls_resto - p_resto),
+            "ic_sup": dif + np.hypot(ls_top - p_top, p_resto - li_resto),
+            "p_valor": p_valor, "p_ajustado": ajustado,
+            "significativa_bonf": ajustado < alfa,
             "ocup_con": df.loc[df[col] == 1, OCUPACION].median(),
             "ocup_sin": df.loc[df[col] == 0, OCUPACION].median(),
         })
     return pd.DataFrame(filas).sort_values("diferencia", ascending=False)
+
+
+def comparar_por_estratos(df, columnas_amen=None, minimo_grupo=10):
+    datos = agrupar_comunas(df)
+    datos["capacidad_tramo"] = pd.cut(datos["accommodates"], [0, 2, 4, np.inf],
+                                     labels=["1–2", "3–4", "5 o más"])
+    datos["en_top"] = cuartil_superior(datos)
+    resultados = []
+    for (comuna, capacidad), sub in datos.groupby(
+            ["comuna_agrupada", "capacidad_tramo"], observed=True):
+        mascara = sub["en_top"]
+        if min(int(mascara.sum()), int((~mascara).sum())) < minimo_grupo:
+            continue
+        tabla = comparar_amenidades(sub, mascara, columnas_amen)
+        tabla["comuna"] = comuna
+        tabla["capacidad"] = capacidad
+        resultados.append(tabla)
+    if not resultados:
+        return pd.DataFrame()
+    tabla = pd.concat(resultados, ignore_index=True)
+    tabla["p_ajustado"] = (tabla["p_valor"] * len(tabla)).clip(upper=1)
+    tabla["significativa_bonf"] = tabla["p_ajustado"] < 0.05
+    return tabla
+
+
+def resumir_estratos(tabla):
+    if tabla.empty:
+        return pd.DataFrame()
+    datos = tabla.assign(positiva=tabla["diferencia"] > 0)
+    return datos.groupby("comodidad", as_index=False).agg(
+        estratos=("comuna", "size"),
+        diferencias_positivas=("positiva", "sum"),
+        significativas_bonf=("significativa_bonf", "sum"),
+        diferencia_minima=("diferencia", "min"),
+        diferencia_maxima=("diferencia", "max"),
+    )
 
 
 def guardar_figura(figura, carpeta, nombre, dpi=200):

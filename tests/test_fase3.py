@@ -38,6 +38,16 @@ class ParsearAmenidadesTests(unittest.TestCase):
 
 
 class ImputadorPorGrupoTests(unittest.TestCase):
+    def test_una_fila_y_grupo_constante(self):
+        for datos in (
+            pd.DataFrame({"accommodates": [2], "beds": [1.0]}),
+            pd.DataFrame({"accommodates": [2, 2, 2], "beds": [1.0, None, 3.0]}),
+        ):
+            with self.subTest(filas=len(datos)):
+                resultado = ImputadorPorGrupo("beds", "accommodates").ajustar_transformar(datos)
+                self.assertFalse(resultado["beds"].isna().any())
+                self.assertEqual(resultado["beds_imputado"].sum(), datos["beds"].isna().sum())
+
     def test_rechaza_transformar_antes_de_ajustar(self):
         datos = pd.DataFrame({"accommodates": [1], "beds": [None]})
 

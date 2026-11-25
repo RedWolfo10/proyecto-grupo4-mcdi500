@@ -7,9 +7,9 @@ septiembre de 2026) tiene 18.904 filas x 90 columnas y unos 50 MB. Para que
 los cuadernos queden livianos de correr y de versionar, el proyecto trabaja
 con una muestra aleatoria ESTRATIFICADA por comuna.
 
-La muestra es reproducible: con la misma entrada y la misma semilla, este
-script da siempre el mismo archivo. Cada integrante descarga el archivo
-original de Inside Airbnb y corre este script una sola vez.
+Con la misma entrada y semilla se seleccionan las mismas filas. Los códigos
+de anfitrión se generan de nuevo en cada anonimización. La muestra versionada
+permite ejecutar el proyecto sin descargar el archivo original.
 
 Uso:
     python src/generar_muestra.py ruta/al/listings.csv
@@ -20,6 +20,7 @@ Uso:
 
 import argparse
 import hashlib
+import secrets
 import sys
 from pathlib import Path
 
@@ -50,8 +51,8 @@ COLUMNA_ID_ANFITRION = "host_id"             # se seudonimiza, no se elimina
 
 
 def seudonimizar(valor, largo=12):
-    """Codigo seudonimo estable: misma entrada -> mismo codigo."""
-    return hashlib.sha256(str(valor).encode("utf-8")).hexdigest()[:largo]
+    """Genera un seudónimo aleatorio; anonimizar conserva la relación entre filas."""
+    return secrets.token_hex((largo + 1) // 2)[:largo]
 
 
 def anonimizar(df, columnas=COLUMNAS_PERSONALES, col_id=COLUMNA_ID_ANFITRION):
@@ -59,8 +60,18 @@ def anonimizar(df, columnas=COLUMNAS_PERSONALES, col_id=COLUMNA_ID_ANFITRION):
     df = df.copy()
     presentes = [c for c in columnas if c in df.columns]
     df = df.drop(columns=presentes)
-    if col_id in df.columns and df[col_id].astype(str).str.isdigit().all():
-        df[col_id] = df[col_id].map(seudonimizar)
+    if col_id in df.columns:
+        ids = df[col_id].astype("string").str.strip()
+        no_vacios = ids.notna() & ids.ne("")
+        mapa = {}
+        usados = set(ids[no_vacios])
+        for identificador in ids[no_vacios].unique():
+            codigo = seudonimizar(identificador)
+            while codigo in usados:
+                codigo = seudonimizar(identificador)
+            mapa[identificador] = codigo
+            usados.add(codigo)
+        df[col_id] = ids.map(mapa)
     return df, presentes
 
 
